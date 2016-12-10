@@ -125,7 +125,7 @@
 		var iname;
 		// tmp = $.getJSON("http://localhost:8888/dbfinal/api/user").responseJSON();
 		// console.log(tmp);
-		function getuser(theUrl){
+		function getuser(theUrl, callbackFunction){
 			$.ajax(
 			{
     			url: theUrl,
@@ -135,13 +135,25 @@
     			success: function(data)
     			{  
         			console.log(data);
-         
+         			if(typeof callbackFunction == 'function')
+            		{
+                		callbackFunction.call(this, data);
+            		}
 
        				console.log(data[0].UserId);
-       				tmp = data[0].Password;
-        			// console.log(tmp);
+       				// tmp = data[0].Password;
+        			console.log(tmp);
     			}
 			});
+
+		}
+
+		function auth(a, b) {
+			if(a == b) {
+				alert("allow");
+			} else {
+				alert("deny");
+			}
 		}
 		
 		
@@ -150,13 +162,14 @@
 				iname = $('#username').val();
 				iPassword = $('#password').val();
 				console.log(iPassword);
-				getuser("http://localhost:8888/dbfinal/api/user/" + iname);
-				console.log(tmp);
-				if(iPassword == tmp) {
-					alert("success");
-				}else {
-					alert("wrong");
-				}
+				
+				getuser("http://localhost:8888/dbfinal/api/user/" + iname, function(data){
+					tmp = data[0].Password;
+					auth(tmp, iPassword);
+				});
+				
+				// console.log(tmp);
+				
 			});
 			
 		});
