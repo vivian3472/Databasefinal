@@ -12,7 +12,7 @@ $di->set('db',function(){
     'host'  => 'localhost',
     'username'=> 'root',
     'password'=> 'root',
-    'dbname' => 'dbfinal'
+    'dbname' => 'final'
   ));
 });
 // echo "success";
@@ -169,7 +169,7 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 //GET Post
 $app->get('/api/news',function() use($app){
 
-  $phql = "SELECT n.PostId, UserId, Text, n.Image, n.Posttime, Longitude, Latitude, Setting, LikeNum, Author, SendTime, Content FROM News as n left join Comments as c on n.PostId=c.PostId";
+  $phql = "SELECT n.PostId, UserId, Text, Image, PostTime, Longitude, Latitude, Setting, LikeNum, Author, SendTime, Content FROM News as n left join Comments as c on n.PostId=c.PostId";
   $news = $app->modelsManager->executeQuery($phql);
   $data = array();
   foreach($news as $new){
