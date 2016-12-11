@@ -166,7 +166,275 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
     return $response;
 });
 
+//GET Post
+$app->get('/api/news',function() use($app){
 
+  $phql = "SELECT * FROM News";
+  $news = $app->modelsManager->executeQuery($phql);
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+    );
+  }
+  echo json_encode($data);
+});
 
+//search User's Post
+$app->get('/api/news/order/{UserId}',function($UserId) use ($app){
+
+  $phql = "SELECT * FROM News WHERE UserId = :UserId: ORDER BY UserId";
+  $news = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $UserId 
+  ));
+
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+   );
+  }
+  echo json_encode($data);
+});
+
+//GET post by setting
+$app->get('/api/public/news',function($UserId) use ($app){
+
+//   $phql = "SELECT * FROM News WHERE UserId IN (
+// SELECT Friend From Relationship WHERE UserId = :UserId:)";
+ $phql = "SELECT * FROM News WHERE Setting = 'Public'";
+  $news = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $UserId 
+  ));
+
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+   );
+  }
+  echo json_encode($data);
+});
+
+//GET post by postID(update later)
+$app->get('/api/news/{PostId}',function($PostId) use ($app){
+
+  $phql = "SELECT * FROM News WHERE PostId = :PostId: ORDER BY PostId";
+  $news = $app->modelsManager->executeQuery($phql,array(
+    'PostId' => $PostId
+  ));
+
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+   );
+  }
+  echo json_encode($data);
+});
+
+//Update Post
+$app->put('/api/news/{PostId}',function($PostId) use ($app){
+//echo json_encode('success');
+  $news = $app->request->getJsonRawBody();
+  //echo json_encode($user);
+  $phql = "UPDATE News SET UserId = :UserId:, Image = :Image:, Posttime = :Posttime:, Longtitude = :Longtitude:, Latitude = :Latitude:, Setting = :Setting:, LikeNum = :LikeNum: WHERE PostId = :PostId:";
+  $status = $app->modelsManager->executeQuery($phql, array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+  ));  
+
+  // Create a response
+    $response = new \Phalcon\Http\Response();
+
+    // Check if the insertion was successful
+    if ($status->success() == true) {
+        $response->setJsonContent(
+            array(
+                'status' => 'OK',
+                'data' => $news
+            )
+        );
+    } else {
+
+        // Change the HTTP status
+        $response->setStatusCode(409, "Conflict");
+
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(
+            array(
+                'status'   => 'ERROR',
+                'messages' => $errors
+            )
+        );
+    }
+
+    return $response;
+
+});
+
+//Post Post
+$app->post('/api/news',function() use ($app){
+  $new = $app->request->getJsonRawBody();
+  $phql = "INSERT INTO News (PostId, UserId, Image, Posttime, Longtitude, Latitude, Setting, LikeNum) VALUES (:PostId:, :UserId:, :Image:, :Posttime:, :Longtitude:, :Latitude:, :Setting:, :LikeNum:)";
+  $status = $app->modelsManager->executeQuery($phql,array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Image' => $new->Image,
+    'Video' => $new->Video,
+    'Entry' => $new->Entry,
+    'Posttime' => $new->Posttime,
+    'LocationId' => $new->LocationId,
+    'Longtitude' => $new->Longtitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'Ilikeit' => $new->Ilikeit
+  ));
+
+//  echo json_encode($status->success());
+  $response = new Phalcon\Http\Response();
+    if ($status->success() == true) {
+        $response->setStatusCode(201, "Created");
+
+        $news->PostId = $status->getModel()->PostId;
+
+        $response->setJsonContent(
+            array(
+                'status' => 'OK',
+                'data'   => $new
+            )
+        );
+
+    } else {
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(
+            array(
+                'status'   => 'ERROR',
+                'messages' => $errors
+            )
+        );
+    }
+
+    return $response;
+
+});
+
+//GET comments
+$app->get('/api/comments',function() use($app){
+  $phql = "SELECT * FROM Comments";
+  $comments = $app->modelsManager->executeQuery($phql);
+  $data = array();
+  foreach($comments as $comment){
+    $data[] = array(
+      'PostId' => $comment->PostId,
+      'Author' => $comment->Author,
+      'Recipient' => $comment->Recipient,
+      'Content' => $comment->Content,
+      'Sendtime' => $comment->Sendtime
+    );
+  }
+  echo json_encode($data);
+});
+//GET Comments by postid
+$app->get('/api/comments/{PostId}',function($PostId) use ($app){
+
+  $phql = "SELECT * FROM Comments WHERE PostId = :PostId:";
+  $comments = $app->modelsManager->executeQuery($phql,array(
+    'PostId' => $PostId 
+  ));
+
+  $data = array();
+  foreach($comments as $comment){
+    $data[] = array(
+      'PostId' => $comment->PostId,
+      'Author' => $comment->Author,
+      'Recipient' => $comment->Recipient,
+      'Content' => $comment->Content,
+      'Sendtime' => $comment->Sendtime
+   );
+  }
+  echo json_encode($data);
+
+});
+
+//post comments
+$app->post('/api/comments',function() use ($app){
+  $comment = $app->request->getJsonRawBody();
+
+  $phql = "INSERT INTO Comments (PostId, Author, Recipient, Content, Sendtime) VALUES (:PostId:, :Author:, :Recipient:, :Content:, :Sendtime:)";
+  $status = $app->modelsManager->executeQuery($phql,array(
+      'PostId' => $comment->PostId,
+      'Author' => $comment->Author,
+      'Recipient' => $comment->Recipient,
+      'Content' => $comment->Content,
+      'Sendtime' => $comment->Sendtime
+  ));
+
+  $response = new Phalcon\Http\Response();
+  if($status->success() == true){
+    $response->setStatusCode(201,'Create New Comments');
+    $comment->PostId = $status->getModel()->PostId;
+
+    $response->setJsonContent(array('status'=>'ok','data'=>$comment));
+  }else{
+    $response->setStatusCode(409,'Conflict');
+
+    $errors = array();
+    foreach($status->getMessages() as $message){
+      $errors[] = $message->getMessage();
+    }
+    $response->setJsonContent(array('status'=>'ERROR','data'=>$errors));
+  }
+  return $response;
+
+});
 
 $app->handle();
