@@ -15,7 +15,7 @@ $di->set('db',function(){
     'dbname' => 'final'
   ));
 });
-//echo "success";
+// echo "success";
 
 
 
@@ -169,7 +169,7 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 //GET Post
 $app->get('/api/news',function() use($app){
 
-  $phql = "SELECT * FROM News";
+  $phql = "SELECT n.PostId, UserId, Text, n.Image, n.Posttime, Longitude, Latitude, Setting, LikeNum, Author, SendTime, Content FROM News as n left join Comments as c on n.PostId=c.PostId";
   $news = $app->modelsManager->executeQuery($phql);
   $data = array();
   foreach($news as $new){
@@ -179,10 +179,13 @@ $app->get('/api/news',function() use($app){
     'Text' => $new->Text,
     'Image' => $new->Image,
     'PostTime' => $new->PostTime,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
-    'LikeNum' => $new->LikeNum
+    'LikeNum' => $new->LikeNum,
+    'Author' => $new->Author,
+    'SendTime' => $new->SendTime,
+    'Content' => $new->Content
     );
   }
   echo json_encode($data);
@@ -204,7 +207,7 @@ $app->get('/api/news/order/{UserId}',function($UserId) use ($app){
     'Text' => $new->Text,
     'Image' => $new->Image,
     'PostTime' => $new->PostTime,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'LikeNum' => $new->LikeNum
@@ -231,7 +234,7 @@ $app->get('/api/public/news',function($UserId) use ($app){
     'Text' => $new->Text,
     'Image' => $new->Image,
     'PostTime' => $new->PostTime,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'LikeNum' => $new->LikeNum
@@ -256,7 +259,7 @@ $app->get('/api/news/{PostId}',function($PostId) use ($app){
     'Text' => $new->Text,
     'Image' => $new->Image,
     'PostTime' => $new->PostTime,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'LikeNum' => $new->LikeNum
@@ -270,14 +273,14 @@ $app->put('/api/news/{PostId}',function($PostId) use ($app){
 //echo json_encode('success');
   $news = $app->request->getJsonRawBody();
   //echo json_encode($user);
-  $phql = "UPDATE News SET UserId = :UserId:, Image = :Image:, Posttime = :Posttime:, Longtitude = :Longtitude:, Latitude = :Latitude:, Setting = :Setting:, LikeNum = :LikeNum: WHERE PostId = :PostId:";
+  $phql = "UPDATE News SET UserId = :UserId:, Image = :Image:, Posttime = :Posttime:, Longitude = :Longitude:, Latitude = :Latitude:, Setting = :Setting:, LikeNum = :LikeNum: WHERE PostId = :PostId:";
   $status = $app->modelsManager->executeQuery($phql, array(
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
     'Text' => $new->Text,
     'Image' => $new->Image,
     'PostTime' => $new->PostTime,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'LikeNum' => $new->LikeNum
@@ -319,7 +322,7 @@ $app->put('/api/news/{PostId}',function($PostId) use ($app){
 //Post Post
 $app->post('/api/news',function() use ($app){
   $new = $app->request->getJsonRawBody();
-  $phql = "INSERT INTO News (PostId, UserId, Image, Posttime, Longtitude, Latitude, Setting, LikeNum) VALUES (:PostId:, :UserId:, :Image:, :Posttime:, :Longtitude:, :Latitude:, :Setting:, :LikeNum:)";
+  $phql = "INSERT INTO News (PostId, UserId, Image, Posttime, Longitude, Latitude, Setting, LikeNum) VALUES (:PostId:, :UserId:, :Image:, :Posttime:, :Longitude:, :Latitude:, :Setting:, :LikeNum:)";
   $status = $app->modelsManager->executeQuery($phql,array(
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
@@ -328,7 +331,7 @@ $app->post('/api/news',function() use ($app){
     'Entry' => $new->Entry,
     'Posttime' => $new->Posttime,
     'LocationId' => $new->LocationId,
-    'Longtitude' => $new->Longtitude,
+    'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'Ilikeit' => $new->Ilikeit
