@@ -437,4 +437,192 @@ $app->post('/api/comments',function() use ($app){
 
 });
 
+//GET request
+$app->get('/api/invite',function() use($app){
+  // echo "success";
+  $phql = "SELECT * FROM Invitation";
+  $invites = $app->modelsManager->executeQuery($phql);
+  $data = array();
+  // echo $data;
+  foreach($invites as $invite){
+    $data[] = array(
+      'UserId' => $invite->UserId,
+      'Invitor' => $invite->Invitor
+    );
+  }
+  echo json_encode($data);
+});
+
+//get request by name
+$app->get('/api/invite/{UserId}',function($UserId) use ($app){
+
+  $phql = "SELECT * FROM Invitation Where UserId = :UserId:";
+  $invites = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $UserId 
+  ));
+
+  $data = array();
+  foreach($invites as $invite){
+    $data[] = array(
+    'Invitor' => $invite->Invitor
+   );
+  }
+  echo json_encode($data);
+
+});
+
+//post request
+$app->post('/api/invite',function() use ($app){
+  $invite = $app->request->getJsonRawBody();
+  $phql = "INSERT INTO Invitation (UserId, Invitor) VALUES (:UserId:, :Invitor:)";
+  $status = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $invite->UserId,
+    'Invitor' => $invite->Invitor
+  ));
+
+  $response = new Phalcon\Http\Response();
+    if ($status->success() == true) {
+        $response->setStatusCode(201, "Created");
+
+
+        $response->setJsonContent(
+            array(
+                'status' => 'OK',
+                'data'   => $invite
+            )
+        );
+
+    } else {
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(
+            array(
+                'status'   => 'ERROR',
+                'messages' => $errors
+            )
+        );
+    }
+
+    return $response;
+
+});
+
+//DELETE
+$app->delete('/api/invite/{UserId}/{Invitor}',function($UserId, $Invitor) use ($app){
+
+  $phql = "DELETE FROM Invitation WHERE UserId = :UserId: and Invitor = :Invitor: ";
+  $status = $app->modelsManager->executeQuery($phql,array(
+      'UserId' => $UserId,
+      'Invitor' => $Invitor
+    ));
+  $response = new \Phalcon\Http\Response();
+  if($status->success() == true){
+    $response = array('status'=>'OK');
+  }else{
+    $this->response->setStatusCode(500,'Internal Error')->setHeaders();
+
+    $errors = array();
+    foreach($status->getMessages() as $message){
+      $errors[] = $message->getMessage();
+    }
+    $response = array('status'=>'Error','data'=>$errors);
+  }
+    return $response;
+});
+
+//GET friendship
+$app->get('/api/relationship',function() use($app){
+  $phql = "SELECT * FROM Relationship";
+  $relations = $app->modelsManager->executeQuery($phql);
+  $data = array();
+  foreach($relations as $relation){
+    $data[] = array(
+      'UserId' => $relation->UserId,
+      'Friend' => $relation->Friend
+    );
+  }
+  echo json_encode($data);
+});
+
+//post relationship
+$app->post('/api/relationship',function() use ($app){
+  $relation = $app->request->getJsonRawBody();
+  $phql = "INSERT INTO Relationship (UserId, Friend) VALUES (:UserId:, :Friend:)";
+  $status = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $relation->UserId,
+    'Friend' => $relation->Friend
+  ));
+
+  $response = new Phalcon\Http\Response();
+    if ($status->success() == true) {
+        $response->setStatusCode(201, "Created");
+
+
+        $response->setJsonContent(
+            array(
+                'status' => 'OK',
+                'data'   => $relation
+            )
+        );
+
+    } else {
+        $response->setStatusCode(409, "Conflict");
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(
+            array(
+                'status'   => 'ERROR',
+                'messages' => $errors
+            )
+        );
+    }
+
+    return $response;
+
+});
+//get friend from user
+$app->get('/api/relationship/{UserId}',function($UserId) use ($app){
+
+  $phql = "SELECT * FROM Relationship WHERE UserId LIKE :UserId: ORDER BY UserId";
+  $relations = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => '%'. $UserId .'%'
+  ));
+
+  $data = array();
+  foreach($relations as $relation){
+    $data[] = array(
+    'UserId' => $relation->UserId,
+    'Friend' => $relation->Friend
+   );
+  }
+  echo json_encode($data);
+
+});
+
+//get friend from user's friend
+$app->get('/api/relationship/friend/{UserId}',function($UserId) use ($app){
+
+  $phql = "SELECT DISTINCT Friend FROM Relationship WHERE UserId IN (SELECT Friend FROM Relationship WHERE UserId = :UserId:) and Friend not in (SELECT Friend FROM Relationship WHERE UserId = :UserId:) and Friend != :UserId:";
+  $relations = $app->modelsManager->executeQuery($phql,array(
+    'UserId' => $UserId 
+  ));
+
+  $data = array();
+  foreach($relations as $relation){
+    $data[] = array(
+    'Friend' => $relation->Friend
+   );
+  }
+  echo json_encode($data);
+
+});
+
+
 $app->handle();
