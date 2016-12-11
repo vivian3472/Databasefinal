@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>NYU Community - Homepage</title>
+    <title>NYU Community - Profile</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
@@ -27,9 +27,7 @@
 
         <!-- Right pannel: News  -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <h4 style = "color: #000">News</h4>
-            <div class="container-fluid acti-List" id="acti-List">
-            </div>
+            <div class="profilepage" id="prof"></div>
     	</div><!-- END of Right pannel  -->
         
         <!-- Right pannel: Empty  -->
@@ -53,25 +51,25 @@
     $(document).ready(function(){ $('.footer').load("footer.html"); });
 </script>
 <script>
-    var data_global;
+    document.getElementById("prof").innerHTML=window.location.pathname.split('?')[1];
+    var data_profile;
     function renderList(data) {
         console.log(data);
-        var selection = d3.select("#acti-List").selectAll("li")
+        var selection = d3.select("#prof")
             .data(data, function (d) {
+               
                 return d.PostId;
             });
         selection.enter()
-            .append("li")
-            .attr("class", "well")
             .html(function(d) {
-                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-2"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class=""> </div> '
+                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p></div> </div> '
             })
             
         selection.exit().remove();
     }
-    d3.json('http://localhost:8888/dbfinal/api/news/', function (error, data) {
-        data_global = data;
-        renderList(data_global);
+    d3.json('http://localhost:8888/dbfinal/api/user/', function (error, data) {
+        data_profile = data;
+        renderList(data_profile);
     })
     function getposts(theUrl, callbackFunction){
         $.ajax(
@@ -91,29 +89,9 @@
             }
         });
     }
-    getposts("http://localhost:8888/dbfinal/api/news/", function(data_global){
+    getposts("http://localhost:8888/dbfinal/api/user/", function(data_profile){
 //        alert("allow");
     });
 </script>
-<style>
-    .acti-List li {
-        list-style: none; 
-        margin-bottom: 10px;
-        margin-left: 0px;
-/*        height: 150px;*/
-        box-shadow: inset 2px 2px 1px rgba(0,0,0,.05),2px 2px 1px rgba(0,0,0,.05);
-
-    }
-    #acti-List {
-        margin-left: 0;
-        padding-right: 20px;
-        margin-right: 10px;
-        padding-left: 0;
-    }
-    .postname {
-        font-size: 16px;
-        font-weight: bold;
-    }
-</style>
 </body>
 </html>

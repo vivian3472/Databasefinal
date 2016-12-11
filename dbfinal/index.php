@@ -12,7 +12,7 @@ $di->set('db',function(){
     'host'  => 'localhost',
     'username'=> 'root',
     'password'=> 'root',
-    'dbname' => 'final'
+    'dbname' => 'dbfinal'
   ));
 });
 // echo "success";
