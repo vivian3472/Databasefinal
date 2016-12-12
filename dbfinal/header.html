@@ -4,9 +4,9 @@
             <a class="navbar-brand" href="index.html">NYU Community</a>
         </div>
         <ul class="nav navbar-nav navbar-right navbar-right-set">
-            <li><a href="ntfn.html"> Notifications </a></li>
-            <li><a href="newPost.html"> New Post </a></li>
-            <li><a href="profile.html"> Profile </a></li>
+            <li><a onclick="myNtfn()"> Notifications </a></li>
+            <li><a onclick="myNewPost()"> New Post </a></li>
+            <li><a onclick="myProfile()"> Profile </a></li>
             <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
     </div>
@@ -16,4 +16,25 @@
     .navbar-right-set li a{
         color: #CCC !important;
     }
+    .navbar-right-set li a:hover{
+        color: #FFF !important;
+    }
 </style>
+<script>
+    var id=/id=([^&]+)/i.exec(location.search);
+    if(id)id=id[1];else id='';
+    console.log(id);
+    
+    function myNtfn(){
+        href="ntfn.html";
+        location.href=this.href+"?id="+id;return false;
+    }
+    function myNewPost(){
+        href="newPost.html";
+        location.href=this.href+"?id="+id;return false;
+    }
+    function myProfile(){
+        href="profile.html";
+        location.href=this.href+"?id="+id;return false;
+    }
+</script>

@@ -142,17 +142,29 @@
         			console.log(tmp);
     			}
 			});
-
+		}
+        function postuser(theUrl, callbackFunction){
+			$.ajax(
+			{
+    			url: theUrl,
+    			type: 'POST',
+    			dataType: 'json',
+    			accept: 'application/json',
+    			success: function(data)
+    			{  
+        			console.log(data);
+    			}
+			});
 		}
 
 		function auth(a, b) {
 			if(a == b) {
-				window.location.href = "index.html";
+				window.location.href = "index.html?id="+iname;
 			} else {
 				alert("deny");
+                window.location.href = "login.html";
 			}
 		}
-		
 		
 		$(document).ready(function() {
 			$('#login-submit').click(function(e) {
@@ -164,13 +176,80 @@
 					tmp = data[0].Password;
 					auth(tmp, iPassword);
 				});
-				
 				// console.log(tmp);
-				
 			});
-			
 		});
 		
+        $(document).ready(function() {
+             $('#register-submit').click(function(e) {
+                    console.log("button pressed");
+//                 console.log($('#userid').val());
+            var part1 = $('#userid').val();
+            var part2 = $('#email').val();
+            var part3 = $('#profimage').val();
+            var part4 = $('#age').val();
+            var part5 = $('#newpassword').val();
+            var part6 = $('#confirm-password').val();
+            console.log(part1);
+            sendData();
+
+            function sendData() {
+                formData = {
+                    "UserId": part1
+                    , "Age": part4
+                    , "Image": part3
+                    , "Email": part2
+                    , "Password" : part5
+                }
+                console.log(formData);
+
+                $.ajax(
+			{
+    			url: "http://localhost:8888/dbfinal/api/user/" + part1,
+    			type: 'POST',
+                data: formData,
+    			success: function(data)
+    			{  
+        			console.log(data);
+    			}
+			});
+            }
+        });
+        });
+        
+        
+//        $('#register-submit').click(function(e) {
+//                    console.log("button pressed");
+//            var part1 = $('#username').val();
+//            var part2 = $('#email').val();
+//            var part3 = $('#profimage').val();
+//            var part4 = $('#age').val();
+//            var part5 = $('#password').val();
+//            var part6 = $('#confirm-password').val();
+//            console.log(part1);
+//            sendData();
+//
+//            function sendData() {
+//                formData = {
+//                    "UserId": part1
+//                    , "Age": part4
+//                    , "Image": part3
+//                    , "Email": part2
+//                    , "Password" : part5
+//                }
+//
+//                $.ajax(
+//			{
+//    			url: "http://localhost:8888/dbfinal/api/user",
+//    			type: 'POST',
+//                data: formData,
+//    			success: function(data)
+//    			{  
+//        			console.log(data);
+//    			}
+//			});
+//            }
+//        });
 	</script>
     <script>
         $(document).ready(function(){ $('.header').load("header.html"); });
@@ -179,9 +258,17 @@
 </head>
 <body>
 <!-- Header: Navbar -->
-<div class="header"></div>
-
-<div class="container" style="padding-top: 70px;">
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">NYU Community</a>
+        </div>
+    </div>
+</nav>
+<script language = "php">
+session_destroy();
+</script>
+<div class="container" style="padding-top: 50px;">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-1">
 			<div class="panel panel-login">
@@ -199,7 +286,7 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-lg-12">
-							<form id="login-form" method="post" role="form" style="display: block;" action="http://localhost:8888/dbfinal/index.html" >
+							<form id="login-form" method="post" role="form" style="display: block;" >
 								<div class="form-group">
 									<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
 								</div>
@@ -227,15 +314,21 @@
 									</div>
 								</div>
 							</form>
-							<form id="register-form" action="/api/users" method="post" role="form" style="display: none;">
+							<form id="register-form" method="post" role="form" style="display: none;">
 								<div class="form-group">
-									<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+									<input type="text" name="username" id="userid" tabindex="1" class="form-control" placeholder="Username" value="">
 								</div>
 								<div class="form-group">
 									<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
 								</div>
+                                <div class="form-group">
+									<input type="text" name="profimage" id="profimage" tabindex="1" class="form-control" placeholder="Image Link">
+								</div>
+                                <div class="form-group">
+									<input type="text" name="age" id="age" tabindex="1" class="form-control" placeholder="Age">
+								</div>
 								<div class="form-group">
-									<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+									<input type="password" name="password" id="newpassword" tabindex="2" class="form-control" placeholder="Password">
 								</div>
 								<div class="form-group">
 									<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">

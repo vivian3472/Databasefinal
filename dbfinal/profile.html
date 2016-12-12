@@ -14,11 +14,22 @@
 <body>
 <!-- Header: Navbar -->
 <div class="header"></div>
+<!--
+<script>
 <?php
 session_start();
 $var_value = $_SESSION['username'];
 ?>
-<!--<p>Your name: <?php echo $_SESSION['username'] ?></p>-->
+    
+<p>Your name: <?php echo $_SESSION['username'] ?></p>
+</script>
+-->
+<script>
+var id=/id=([^&]+)/i.exec(location.search);
+if(id)id=id[1];else id='';
+//alert(id);
+</script>
+    
 <!-- Body: Container -->
 <div class="container-fluid">
     <!-- ROW  -->
@@ -56,8 +67,8 @@ $var_value = $_SESSION['username'];
 </script>
 <script>
 //    document.getElementById("prof").innerHTML=window.location.pathname.split('?')[1];
-    var data_profile;
-    var iname = "<?php echo $_SESSION['username']; ?>";
+    var data_profile = id;
+    var iname = id;
     function renderList(data) {
 //        console.log(data);
         var selection = d3.select("#prof").selectAll("div")
@@ -68,7 +79,7 @@ $var_value = $_SESSION['username'];
         selection.enter()
             .append("div")
             .html(function(d) {
-                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p></div> </div> '
+                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.Email+ '</p></div> </div> '
             })
             
         selection.exit().remove();
@@ -97,7 +108,7 @@ $var_value = $_SESSION['username'];
         });
     }
     $(document).ready(function() {
-        iname = "Yuwei2";
+//        iname = "Yuwei2";
         getuser("http://localhost:8888/dbfinal/api/user/" + iname, function(data){
             tmp = data[0].UserId;
             console.log(tmp);
