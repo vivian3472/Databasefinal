@@ -49,7 +49,8 @@ $app->get('/api/user/{UserId}',function($UserId) use ($app){
 
   $phql = "SELECT * FROM User WHERE UserId LIKE :UserId: ORDER BY UserId";
   $users = $app->modelsManager->executeQuery($phql,array(
-    'UserId' => '%'. $UserId .'%'
+    // 'UserId' => '%'. $UserId .'%'
+    'UserId' => $UserId
   ));
 
   $data = array();
