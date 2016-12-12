@@ -15,6 +15,16 @@
 <!-- Header: Navbar -->
 <div class="header"></div>
 
+<!--<?php echo date('l, F jS, Y'); ?>-->
+<?php
+session_start();
+if(isset($_POST['login-submit'])){
+    $_SESSION['username'] = trim($_POST['username']);
+//    echo "Current user is " . $_SESSION['username'];
+}
+$_SESSION['username'] = $var_value;
+?>
+    
 <!-- Body: Container -->
 <div class="container-fluid">
     <!-- ROW  -->
@@ -40,7 +50,6 @@
     </div><!-- END of ROW -->
 </div><!-- END of Body: Container -->
     
-
 <!-- Footer -->
 <div class="footer"></div>
 
@@ -52,6 +61,7 @@
     $(document).ready(function(){ $('.header').load("header.html"); });
     $(document).ready(function(){ $('.footer').load("footer.html"); });
 </script>
+
 <script>
     var data_global;
     function renderList(data) {
@@ -64,7 +74,7 @@
             .append("li")
             .attr("class", "well")
             .html(function(d) {
-                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-2"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class=""> </div> '
+                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> </div> '
             })
             
         selection.exit().remove();
@@ -113,6 +123,22 @@
     .postname {
         font-size: 16px;
         font-weight: bold;
+    }
+    .postimg {
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .likenum {
+        padding-left: 15px;
+    }
+    .likeimg {
+        width: 30px;
+        padding-right: 10px;
+        padding-bottom: 5px;
+    }
+    .commenttext {
+        font-size: 16px;
     }
 </style>
 </body>
