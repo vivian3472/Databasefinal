@@ -11,6 +11,23 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
+
+<style type="text/css">
+    
+    .form-control{
+  box-shadow: none;
+  height: 30px;
+  margin: 5px 0;
+  font-size: 12px;
+  border: 0;
+  box-shadow: none;
+ 
+
+  border-radius: 6px;
+  font-size: 12px;
+  padding-left: 30px;
+}
+</style>
 <body>
 <!-- Header: Navbar -->
 <div class="header"></div>
@@ -80,7 +97,7 @@ $_SESSION['username'] = $var_value;
             .append("li")
             .attr("class", "well")
             .html(function(d) {
-                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> </div> '
+                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> <input type="text" class="form-control" placeholder="Post a comment"></div> '
             })
             
         selection.exit().remove();

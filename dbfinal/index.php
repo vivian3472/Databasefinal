@@ -1,6 +1,10 @@
 <?php 
 
 
+
+
+
+
 $loader = new \Phalcon\Loader();
 $loader->registerDirs(array(
   __DIR__.'/models/'
@@ -27,6 +31,7 @@ $app = new \Phalcon\Mvc\Micro($di);
 //echo "s2";
 //GET user_error
 $app->get('/api/user',function() use($app){
+  // echo $app;
   $phql = "SELECT * FROM User";
   $users = $app->modelsManager->executeQuery($phql);
   $data = array();
@@ -52,6 +57,7 @@ $app->get('/api/user/{UserId}',function($UserId) use ($app){
     // 'UserId' => '%'. $UserId .'%'
     'UserId' => $UserId
   ));
+  // echo $users[0];
 
   $data = array();
   foreach($users as $user){
@@ -69,9 +75,21 @@ $app->get('/api/user/{UserId}',function($UserId) use ($app){
 
 //POST User
 $app->post('/api/user',function() use ($app){
-  $user = $app->request->getJsonRawBody();
+  // $request = new Phalcon\Http\Request();
+  // Request::getJsonRawBody(true);
 
+  $user = $app->request->getJsonRawBody();
+// $user = $app->request->get();
+// $user->response->setContentType('application/json', 'utf-8');
+  // echo json_encode($user);
+  // echo"1";
+  // $phql = "INSERT INTO User (UserId, Email, Password, Age, Image)"."VALUES (:UserId:, :Email:, :Password:, :Age:, :Image:)";
   $phql = "INSERT INTO User (UserId, Age, Image, Email, Password) VALUES (:UserId:, :Age:, :Image:, :Email:, :Password:)";
+  // $phql = "INSERT INTO User (UserId, Age, Image, Email, Password) VALUES ('1', 11, 'asf', 'saf@sf', '111')";
+  // $status = $app->modelsManager->executeQuery($phql);
+  // echo"3";
+  // $phql = "SELECT * FROM User";
+// $phql = "UPDATE User SET Age = 11 WHERE UserId = '123'";
   $status = $app->modelsManager->executeQuery($phql,array(
     'UserId' => $user->UserId,
     'Age' => $user->Age,
@@ -79,6 +97,10 @@ $app->post('/api/user',function() use ($app){
     'Email' => $user->Email,
     'Password' => $user->Password
   ));
+  echo json_encode($status);
+  // $status = $app->modelsManager->executeQuery($phql);
+  // echo"2";
+
 
   $response = new Phalcon\Http\Response();
   if($status->success() == true){
@@ -169,6 +191,28 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 
 //GET Post
 $app->get('/api/news',function() use($app){
+
+  $phql = "SELECT * FROM News";
+  $news = $app->modelsManager->executeQuery($phql);
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'UserId' => $new->UserId,
+    'Text' => $new->Text,
+    'Image' => $new->Image,
+    'PostTime' => $new->PostTime,
+    'Longitude' => $new->Longitude,
+    'Latitude' => $new->Latitude,
+    'Setting' => $new->Setting,
+    'LikeNum' => $new->LikeNum
+    );
+  }
+  echo json_encode($data);
+});
+
+//GET Post and comments
+$app->get('/api/allnews',function() use($app){
 
   $phql = "SELECT n.PostId, UserId, Text, Image, PostTime, Longitude, Latitude, Setting, LikeNum, Author, SendTime, Content FROM News as n left join Comments as c on n.PostId=c.PostId";
   $news = $app->modelsManager->executeQuery($phql);
@@ -322,23 +366,24 @@ $app->put('/api/news/{PostId}',function($PostId) use ($app){
 
 //Post Post
 $app->post('/api/news',function() use ($app){
+  // echo "1";
   $new = $app->request->getJsonRawBody();
-  $phql = "INSERT INTO News (PostId, UserId, Image, Posttime, Longitude, Latitude, Setting, LikeNum) VALUES (:PostId:, :UserId:, :Image:, :Posttime:, :Longitude:, :Latitude:, :Setting:, :LikeNum:)";
+  $phql = "INSERT INTO News (PostId, UserId, Image, Text, PostTime, Longitude, Latitude, Setting, LikeNum) VALUES (:PostId:, :UserId:, :Image:, :Text:, :PostTime:, :Longitude:, :Latitude:, :Setting:, :LikeNum:)";
+  // echo json_encode($new);
+  // $phql = "INSERT INTO `news` (`PostId`, `UserId`, `Text`, `Image`, `PostTime`, `Longitude`, `Latitude`, `Setting`, `LikeNum`) VALUES ('another', 'vivian', 'I\'m happy', 'http://www.alienskin.com/site/wp-content/uploads/2015/02/ChristinaRamseyAdventuresAwait.jpg', '2016-12-09 20:14:54', '42.55', '124.24', 'public', '2');"
   $status = $app->modelsManager->executeQuery($phql,array(
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
+    'Text' => $new->Text,
     'Image' => $new->Image,
-    'Video' => $new->Video,
-    'Entry' => $new->Entry,
-    'Posttime' => $new->Posttime,
-    'LocationId' => $new->LocationId,
+    'PostTime' => $new->PostTime,
     'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
-    'Ilikeit' => $new->Ilikeit
+    'LikeNum' => $new->LikeNum
   ));
-
-//  echo json_encode($status->success());
+echo json_encode($status);
+ // echo json_encode($status->success());
   $response = new Phalcon\Http\Response();
     if ($status->success() == true) {
         $response->setStatusCode(201, "Created");

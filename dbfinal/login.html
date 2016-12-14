@@ -136,26 +136,26 @@
             		{
                 		callbackFunction.call(this, data);
             		}
-
+            		console.log(data[0]);
        				console.log(data[0].UserId);
        				// tmp = data[0].Password;
         			console.log(tmp);
     			}
 			});
 		}
-        function postuser(theUrl, callbackFunction){
-			$.ajax(
-			{
-    			url: theUrl,
-    			type: 'POST',
-    			dataType: 'json',
-    			accept: 'application/json',
-    			success: function(data)
-    			{  
-        			console.log(data);
-    			}
-			});
-		}
+  //       function postuser(theUrl, callbackFunction){
+		// 	$.ajax(
+		// 	{
+  //   			url: theUrl,
+  //   			type: 'POST',
+  //   			dataType: 'json',
+  //   			accept: 'application/json',
+  //   			success: function(data)
+  //   			{  
+  //       			console.log(data[0]);
+  //   			}
+		// 	});
+		// }
 
 		function auth(a, b) {
 			if(a == b) {
@@ -173,10 +173,11 @@
 				console.log(iPassword);
 				
 				getuser("http://localhost:8888/dbfinal/api/user/" + iname, function(data){
+					console.log(data);
 					tmp = data[0].Password;
 					auth(tmp, iPassword);
 				});
-				// console.log(tmp);
+				console.log(data);
 			});
 		});
 		
@@ -187,7 +188,7 @@
             var part1 = $('#userid').val();
             var part2 = $('#email').val();
             var part3 = $('#profimage').val();
-            var part4 = $('#age').val();
+            var part4 = parseInt($('#age').val());
             var part5 = $('#newpassword').val();
             var part6 = $('#confirm-password').val();
             console.log(part1);
@@ -195,24 +196,27 @@
 
             function sendData() {
                 formData = {
-                    "UserId": part1
-                    , "Age": part4
-                    , "Image": part3
-                    , "Email": part2
-                    , "Password" : part5
+                    "UserId": part1, 
+                    "Age": part4,
+                    "Image": part3,
+                    "Email": part2,
+                    "Password" : part5
                 }
-                console.log(formData);
+                console.log(JSON.stringify(formData));
 
                 $.ajax(
-			{
-    			url: "http://localhost:8888/dbfinal/api/user/" + part1,
-    			type: 'POST',
-                data: formData,
-    			success: function(data)
-    			{  
-        			console.log(data);
-    			}
-			});
+				{
+	    			url: "http://localhost:8888/dbfinal/api/user",
+	    			type: 'POST',
+	                data: JSON.stringify(formData),
+	    			success: function(data)
+	    			{  
+	        			console.log("success");
+	    			},
+	    			error: function (xhr, ajaxOptions, thrownError) {
+	    				console.log("error");
+	       			}
+				});
             }
         });
         });

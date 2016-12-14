@@ -9,15 +9,18 @@ class User extends Model
    public function validation()
     {
 
-        //Robot name must be unique
-        $this->validate(new Uniqueness(
-            array(
-                "field"   => "UserId",
-                "message" => "The UserId name must be unique"
-            )
-        ));
-        //Check if any messages have been produced
-        if ($this->validationHasFailed() == true) {
+        // //Robot name must be unique
+        // $this->validate(new Uniqueness(
+        //     array(
+        //         "field"   => "UserId",
+        //         "message" => "The UserId name must be unique"
+        //     )
+        // ));
+        // //Check if any messages have been produced
+        // if ($this->validationHasFailed() == true) {
+        //     return false;
+        // }
+               if ($this->validationHasFailed() == true) {
             return false;
         }
     }
