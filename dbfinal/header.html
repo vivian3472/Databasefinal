@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">NYU Community</a>
+            <a class="navbar-brand" onclick="myIndex()">NYU Community</a>
         </div>
         <ul class="nav navbar-nav navbar-right navbar-right-set">
             <li><a onclick="myNtfn()"> Notifications </a></li>
@@ -23,15 +23,19 @@
 <script>
     var id=/id=([^&]+)/i.exec(location.search);
     if(id)id=id[1];else id='';
-    console.log(id);
+    console.log(id+" from header");
     
+    function myIndex(){
+        href="index.html";
+        location.href=this.href+"?id="+id;return false;
+    }
     function myNtfn(){
         href="ntfn.html";
         location.href=this.href+"?id="+id;return false;
     }
     function myNewPost(){
-        href="newPost.html";
-        location.href=this.href+"?id="+id;return false;
+        href="post.html";
+//        location.href=this.href+"?id="+id;return false;
     }
     function myProfile(){
         href="profile.html";

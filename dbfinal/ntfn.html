@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>NYU Community - Profile</title>
+    <title>NYU Community - Notifications</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
@@ -42,7 +42,8 @@ $var_value = $_SESSION['username'];
 
         <!-- Right pannel: News  -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="profilepage" id="prof"></div>
+            <h4 style = "color: #000">Notifications</h4>
+            <div class="container-fluid invt-List" id="invt-List"></div>
     	</div><!-- END of Right pannel  -->
         
         <!-- Right pannel: Empty  -->
@@ -51,8 +52,7 @@ $var_value = $_SESSION['username'];
             </div>
         </div><!-- END of Right pannel  -->
     </div><!-- END of ROW -->
-</div><!-- END of Body: Container -->
-    
+</div><!-- END of Body: Container -->  
 
 <!-- Footer -->
 <div class="footer"></div>
@@ -67,29 +67,28 @@ $var_value = $_SESSION['username'];
 </script>
     
 <script>
-    var data_profile;
+    var data_ntfn;
     var iname = id;
     function renderList(data) {
-//        console.log(data);
-        var selection = d3.select("#prof").selectAll("div")
+        console.log(data);
+        var selection = d3.select("#invt-List").selectAll("li")
             .data(data, function (d) {
-//               console.log(d);
-                return d.UserId;
+                return d.Invitor;
             });
         selection.enter()
-            .append("div")
+            .append("li")
+            .attr("class", "well")
             .html(function(d) {
-                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div> </div> '
+                return '<div class="row"><div class="col-xs-8"><p>Invitor: '+d.Invitor+'</p></div><div class="col-xs-2"><a href="" onclick="acptRq()"><p>Accept</p></a></div><div class="col-xs-2"><a href="" onclick="ignrRq()"><p>Ignore</p></a></div></div>'
             })
             
         selection.exit().remove();
     }
-    d3.json('http://localhost:8888/dbfinal/api/user/'+iname, function (error, data) {
-        data_profile = data;
-//        console.log(data_profile);
-        renderList(data_profile);
+    d3.json('http://localhost:8888/dbfinal/api/invite/'+iname, function (error, data) {
+        data_ntfn = data;
+        renderList(data_ntfn);
     })
-    function getuser(theUrl, callbackFunction){
+    function getposts(theUrl, callbackFunction){
         $.ajax(
         {
             url: theUrl,
@@ -98,7 +97,7 @@ $var_value = $_SESSION['username'];
             accept: 'application/json',
             success: function(data)
             {  
-//                console.log(data);
+                console.log(data);
                 if(typeof callbackFunction == 'function')
                 {
                     callbackFunction.call(this, data);
@@ -107,17 +106,26 @@ $var_value = $_SESSION['username'];
             }
         });
     }
-    $(document).ready(function() {
-//        iname = "Yuwei2";
-        getuser("http://localhost:8888/dbfinal/api/user/" + iname, function(data){
-            tmp = data[0].UserId;
-//            console.log(tmp);
-//          auth(tmp, iPassword);
-        });
+    getposts("http://localhost:8888/dbfinal/api/invite/"+iname, function(data_ntfn){
+//        alert("allow");
     });
 </script>
 <style>
-    
+    .invt-List li {
+        list-style: none; 
+        margin-bottom: 10px;
+        margin-left: 0px;
+        margin-right: 20px;
+        box-shadow: inset 2px 2px 1px rgba(0,0,0,.05),2px 2px 1px rgba(0,0,0,.05);
+        font-size: 16px;
+
+    }
+    #invt-List {
+        margin-left: 0;
+        padding-right: 20px;
+        margin-right: 10px;
+        padding-left: 0;
+    }
 </style>
 </body>
 </html>
