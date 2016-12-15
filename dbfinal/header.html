@@ -3,27 +3,51 @@
         <div class="navbar-header">
             <a class="navbar-brand" onclick="myIndex()">NYU Community</a>
         </div>
+        <div class="container-1">
+            <input class="headersearch" type="search" id="search" placeholder="Search..." />
+        </div>
         <ul class="nav navbar-nav navbar-right navbar-right-set">
             <li><a onclick="myNtfn()"> Notifications </a></li>
             <li><a onclick="myNewPost()"> New Post </a></li>
             <li><a onclick="myProfile()"> Profile </a></li>
-            <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a onclick="myLogin()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         </ul>
     </div>
 </nav>
 
 <style>
+    .navbar-brand{
+        color: #BBB !important;
+    }
+    .navbar-header a:hover{
+        cursor:pointer;
+        color: #FFF !important;
+    }
     .navbar-right-set li a{
-        color: #CCC !important;
+        color: #BBB !important;
     }
     .navbar-right-set li a:hover{
+        cursor:pointer;
         color: #FFF !important;
+        background-color: #666 !important;
+    }
+    .headersearch {
+        float: left;
+        margin-top: 11px;
+        padding-left: 5px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+    .headersearch:focus{
+        outline:none;
+        background: #FFF;
     }
 </style>
 <script>
     var id=/id=([^&]+)/i.exec(location.search);
     if(id)id=id[1];else id='';
-    console.log(id+" from header");
+    console.log(id+":id from header");
     
     function myIndex(){
         href="index.html";
@@ -35,10 +59,28 @@
     }
     function myNewPost(){
         href="post.html";
-//        location.href=this.href+"?id="+id;return false;
+        location.href=this.href+"?id="+id;return false;
     }
     function myProfile(){
         href="profile.html";
         location.href=this.href+"?id="+id;return false;
     }
+    function myLogin(){
+        if (id == ''){
+            href="login.html";
+            location.href=this.href;return false;
+        }
+        else {
+            href="index.html";
+            location.href=this.href+"?id="+id;return false;
+        }
+    }
+    document.querySelector('#search').addEventListener('keypress', function (e) {
+        var key = e.which || e.keyCode;
+        if (key === 13) { // 13 is enter
+          // code for enter
+            keyword = $('#search').val();
+            window.location.href="search.html?search="+keyword;return false;
+        }
+    });
 </script>

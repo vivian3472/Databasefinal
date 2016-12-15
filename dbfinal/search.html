@@ -7,24 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>NYU Community - Homepage</title>
+    <title>NYU Community - Search Result</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
 
-<style type="text/css">
-    .form-control{
-        box-shadow: none;
-        height: 34px;
-        margin: 5px 0;
-        font-size: 14px;
-        border: 0;
-        box-shadow: none;
-        border-radius: 6px;
-        font-size: 12px;
-        padding-left: 30px;
-    }
-</style>
 <body>
 <!-- Header: Navbar -->
 <div class="header"></div>
@@ -41,7 +28,9 @@ $_SESSION['username'] = $var_value;
 </script>    
 -->
 <script>
-
+    var key=/search=([^&]+)/i.exec(location.search);
+    if(key)key=key[1];else key='';
+    console.log(key+":key from header");
 </script>
 
 <!-- Body: Container -->
@@ -56,7 +45,7 @@ $_SESSION['username'] = $var_value;
 
         <!-- Right pannel: News  -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <h4 style = "color: #000">News</h4>
+            <h4 style = "color: #000">Results</h4>
             <div class="container-fluid acti-List" id="acti-List">
             </div>
     	</div><!-- END of Right pannel  -->

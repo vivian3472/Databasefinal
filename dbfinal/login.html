@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>NYU Community - Login or Register</title>
 	<style>
 		.panel-login {
 			border-color: #ccc;
@@ -183,80 +184,45 @@
 		
         $(document).ready(function() {
              $('#register-submit').click(function(e) {
-                    console.log("button pressed");
+                console.log("button pressed");
 //                 console.log($('#userid').val());
-            var part1 = $('#userid').val();
-            var part2 = $('#email').val();
-            var part3 = $('#profimage').val();
-            var part4 = parseInt($('#age').val());
-            var part5 = $('#newpassword').val();
-            var part6 = $('#confirm-password').val();
-            console.log(part1);
-            sendData();
+                var part1 = $('#userid').val();
+                var part2 = $('#email').val();
+                var part3 = $('#profimage').val();
+                var part4 = parseInt($('#age').val());
+                var part5 = $('#newpassword').val();
+                var part6 = $('#confirm-password').val();
+                console.log(part1);
+                sendData();
 
-            function sendData() {
-                formData = {
-                    "UserId": part1, 
-                    "Age": part4,
-                    "Image": part3,
-                    "Email": part2,
-                    "Password" : part5
+                function sendData() {
+                    formData = {
+                        "UserId": part1, 
+                        "Age": part4,
+                        "Image": part3,
+                        "Email": part2,
+                        "Password" : part5
+                    }
+                    console.log(JSON.stringify(formData));
+
+                    $.ajax(
+                    {
+                        url: "http://localhost:8888/dbfinal/api/user",
+                        type: 'POST',
+                        data: JSON.stringify(formData),
+                        success: function(data)
+                        {  
+                            console.log("success");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log("error");
+                        }
+                    });
                 }
-                console.log(JSON.stringify(formData));
-
-                $.ajax(
-				{
-	    			url: "http://localhost:8888/dbfinal/api/user",
-	    			type: 'POST',
-	                data: JSON.stringify(formData),
-	    			success: function(data)
-	    			{  
-	        			console.log("success");
-	    			},
-	    			error: function (xhr, ajaxOptions, thrownError) {
-	    				console.log("error");
-	       			}
-				});
-            }
+            });
         });
-        });
-        
-        
-//        $('#register-submit').click(function(e) {
-//                    console.log("button pressed");
-//            var part1 = $('#username').val();
-//            var part2 = $('#email').val();
-//            var part3 = $('#profimage').val();
-//            var part4 = $('#age').val();
-//            var part5 = $('#password').val();
-//            var part6 = $('#confirm-password').val();
-//            console.log(part1);
-//            sendData();
-//
-//            function sendData() {
-//                formData = {
-//                    "UserId": part1
-//                    , "Age": part4
-//                    , "Image": part3
-//                    , "Email": part2
-//                    , "Password" : part5
-//                }
-//
-//                $.ajax(
-//			{
-//    			url: "http://localhost:8888/dbfinal/api/user",
-//    			type: 'POST',
-//                data: formData,
-//    			success: function(data)
-//    			{  
-//        			console.log(data);
-//    			}
-//			});
-//            }
-//        });
 	</script>
     <script>
-        $(document).ready(function(){ $('.header').load("header.html"); });
         $(document).ready(function(){ $('.footer').load("footer.html"); });
     </script>
 </head>
@@ -265,7 +231,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">NYU Community</a>
+            <a class="navbar-brand" href="login.html">NYU Community</a>
         </div>
     </div>
 </nav>

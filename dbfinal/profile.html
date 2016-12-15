@@ -79,15 +79,20 @@ $var_value = $_SESSION['username'];
         selection.enter()
             .append("div")
             .html(function(d) {
-                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div> </div> '
+                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div><div class="col-xs-3"><a onclick="myEditProf()">Edit profile</a></div> </div> '
             })
             
         selection.exit().remove();
     }
     d3.json('http://localhost:8888/dbfinal/api/user/'+iname, function (error, data) {
-        data_profile = data;
-//        console.log(data_profile);
-        renderList(data_profile);
+        if (iname == ''){
+            data_profile = '';
+        }
+        else {
+            data_profile = data;
+    //        console.log(data_profile);
+            renderList(data_profile);
+            }
     })
     function getuser(theUrl, callbackFunction){
         $.ajax(
@@ -115,6 +120,10 @@ $var_value = $_SESSION['username'];
 //          auth(tmp, iPassword);
         });
     });
+    function myEditProf(){
+        href="edituser.html";
+        location.href=this.href+"?id="+id;return false; 
+    }
 </script>
 <style>
     
