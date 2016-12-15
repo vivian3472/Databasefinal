@@ -28,7 +28,10 @@ $_SESSION['username'] = $var_value;
 </script>    
 -->
 <script>
-    var key=/search=([^&]+)/i.exec(location.search);
+    var id=/id=([^&]+)/i.exec(location.search);
+    if(id)id=id[1];else id='';
+    console.log(id+":id from search page");
+    var key=/search=([^&]+)/i.exec(location.hash);
     if(key)key=key[1];else key='';
     console.log(key+":key from header");
 </script>
@@ -46,7 +49,7 @@ $_SESSION['username'] = $var_value;
         <!-- Right pannel: News  -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <h4 style = "color: #000">Results</h4>
-            <div class="container-fluid acti-List" id="acti-List">
+            <div class="container-fluid search-List" id="search-List">
             </div>
     	</div><!-- END of Right pannel  -->
         
@@ -66,56 +69,96 @@ $_SESSION['username'] = $var_value;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script>
-//    var id = "Yuwei2";
     $(document).ready(function(){ $('.header').load("header.html"); });
     $(document).ready(function(){ $('.footer').load("footer.html"); });
 </script>
 
 <script>
-    var data_global;
+    var data_profile;
+    var iname = key;
     function renderList(data) {
-        console.log(data);
-        var selection = d3.select("#acti-List").selectAll("li")
+//        console.log(data);
+        var selection = d3.select("#search-List").selectAll("div")
             .data(data, function (d) {
-                return d.PostId;
+//               console.log(d);
+                return d.UserId;
             });
         selection.enter()
-            .append("li")
-            .attr("class", "well")
+            .append("div")
             .html(function(d) {
-                return ' <div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> <input type="text" class="form-control" placeholder="Post a comment here..."></div> '
+                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div><div class="col-xs-3 hovereffect"><a onclick="applyRq(this.id)" id="'+d.UserId+'"><p>Friend Request</p></a></div> </div> '
             })
             
         selection.exit().remove();
     }
-    d3.json('http://localhost:8888/dbfinal/api/news/', function (error, data) {
-        data_global = data;
-        renderList(data_global);
-    })
-    function getposts(theUrl, callbackFunction){
-        $.ajax(
-        {
-            url: theUrl,
-            type: 'GET',
-            dataType: 'json',
-            accept: 'application/json',
-            success: function(data)
-            {  
-                console.log(data);
-                if(typeof callbackFunction == 'function')
-                {
-                    callbackFunction.call(this, data);
-                }
-                console.log(data[0].PostId);
+    d3.json('http://localhost:8888/dbfinal/api/user/'+iname, function (error, data) {
+        if (iname == ''){
+            data_profile = '';
+        }
+        else {
+            data_profile = data;
+//            console.log(data_profile[0]);
+            renderList(data_profile);
             }
-        });
+    })
+//    function getuser(theUrl, callbackFunction){
+//        $.ajax(
+//        {
+//            url: theUrl,
+//            type: 'GET',
+//            dataType: 'json',
+//            accept: 'application/json',
+//            success: function(data)
+//            {  
+////                console.log(data);
+//                if(typeof callbackFunction == 'function')
+//                {
+//                    callbackFunction.call(this, data);
+//                }
+////                console.log(data[0].PostId);
+//            }
+//        });
+//    }
+//    $(document).ready(function() {
+////        iname = "Yuwei2";
+//        getuser("http://localhost:8888/dbfinal/api/user/" + iname, function(data){
+//            tmp = data[0].UserId;
+//        });
+//    });
+
+    function applyRq(element){
+        var name = element;
+        var message = "Your request to "+name+" is sent! ";
+        alert(message);
+        sendData();
+        
+        function sendData() {
+            formData = {
+                "UserId": name, 
+                "Invitor": id
+            }
+            console.log(JSON.stringify(formData));
+            $.ajax(
+            {
+                url: "http://localhost:8888/dbfinal/api/invite",
+                type: 'POST',
+                data: JSON.stringify(formData),
+                success: function(data)
+                {  
+                    console.log("success");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+            });
+        }
+        
+        href="index.html";
+        location.href=this.href+"?id="+id;return false;
     }
-    getposts("http://localhost:8888/dbfinal/api/news/", function(data_global){
-//        alert("allow");
-    });
 </script>
 <style>
-    .acti-List li {
+    .search-List li {
         list-style: none; 
         margin-bottom: 10px;
         margin-left: 0px;
@@ -123,31 +166,14 @@ $_SESSION['username'] = $var_value;
         box-shadow: inset 2px 2px 1px rgba(0,0,0,.05),2px 2px 1px rgba(0,0,0,.05);
 
     }
-    #acti-List {
+    #search-List {
         margin-left: 0;
         padding-right: 20px;
         margin-right: 10px;
         padding-left: 0;
     }
-    .postname {
-        font-size: 16px;
-        font-weight: bold;
-    }
-    .postimg {
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .likenum {
-        padding-left: 15px;
-    }
-    .likeimg {
-        width: 30px;
-        padding-right: 10px;
-        padding-bottom: 5px;
-    }
-    .commenttext {
-        font-size: 16px;
+    .hovereffect a:hover{
+        cursor: pointer;
     }
 </style>
 </body>

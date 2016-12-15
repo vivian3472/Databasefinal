@@ -4,7 +4,7 @@
             <a class="navbar-brand" onclick="myIndex()">NYU Community</a>
         </div>
         <div class="container-1">
-            <input class="headersearch" type="search" id="search" placeholder="Search..." />
+            <input class="headersearch" type="search" id="search" placeholder="Search friends..." />
         </div>
         <ul class="nav navbar-nav navbar-right navbar-right-set">
             <li><a onclick="myNtfn()"> Notifications </a></li>
@@ -77,10 +77,12 @@
     }
     document.querySelector('#search').addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
+        keyword = '';
         if (key === 13) { // 13 is enter
           // code for enter
             keyword = $('#search').val();
-            window.location.href="search.html?search="+keyword;return false;
+            location.reload();
+            window.location.href="search.html?id="+id+"#search="+keyword;return false;
         }
     });
 </script>

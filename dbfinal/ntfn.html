@@ -79,7 +79,7 @@ $var_value = $_SESSION['username'];
             .append("li")
             .attr("class", "well")
             .html(function(d) {
-                return '<div class="row"><div class="col-xs-8"><p>Invitor: '+d.Invitor+'</p></div><div class="col-xs-2"><a href="" onclick="acptRq()"><p>Accept</p></a></div><div class="col-xs-2"><a href="" onclick="ignrRq()"><p>Ignore</p></a></div></div>'
+                return '<div class="row"><div class="col-xs-8 hovereffect">Invitor: <a onclick="seeProfile(this.id)" id="'+d.Invitor+'">'+d.Invitor+'</a></div><div class="col-xs-2 hovereffect"><a onclick="acptRq(this.id)" id="'+d.Invitor+'"><p>Accept</p></a></div><div class="col-xs-2 hovereffect"><a onclick="ignrRq(this.id)" id="'+d.Invitor+'"><p>Ignore</p></a></div></div>'
             })
             
         selection.exit().remove();
@@ -88,27 +88,47 @@ $var_value = $_SESSION['username'];
         data_ntfn = data;
         renderList(data_ntfn);
     })
-    function getposts(theUrl, callbackFunction){
-        $.ajax(
-        {
-            url: theUrl,
-            type: 'GET',
-            dataType: 'json',
-            accept: 'application/json',
-            success: function(data)
-            {  
-                console.log(data);
-                if(typeof callbackFunction == 'function')
-                {
-                    callbackFunction.call(this, data);
-                }
-//                console.log(data[0].PostId);
-            }
-        });
+    function seeProfile(element){
+        var keyword = element;
+        window.location.href="search.html?id="+id+"#search="+keyword;return false;
     }
-    getposts("http://localhost:8888/dbfinal/api/invite/"+iname, function(data_ntfn){
-//        alert("allow");
-    });
+    function acptRq(element){
+        var name = element;
+        var message = "Your accept the request from "+name+"! ";
+        alert(message);
+        sendData(id, name);
+        sendData(name, id);
+        
+        function sendData(name1, name2) {
+            formData = {
+                "UserId": name1, 
+                "Friend": name2
+            }
+            console.log(JSON.stringify(formData));
+            $.ajax(
+            {
+                url: "http://localhost:8888/dbfinal/api/relationship",
+                type: 'POST',
+                data: JSON.stringify(formData),
+                success: function(data)
+                {  
+                    console.log("success");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+            });
+        }
+        
+        location.reload();
+    }
+    function ignrRq(element){
+        var name = element;
+        var message = "Your ignore the request from "+name+"! ";
+        alert(message);
+        
+        location.reload();
+    }
 </script>
 <style>
     .invt-List li {
@@ -125,6 +145,9 @@ $var_value = $_SESSION['username'];
         padding-right: 20px;
         margin-right: 10px;
         padding-left: 0;
+    }
+    .hovereffect a:hover{
+        cursor: pointer;
     }
 </style>
 </body>
