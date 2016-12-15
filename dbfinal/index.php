@@ -427,7 +427,7 @@ $app->get('/api/comments',function() use($app){
       'Author' => $comment->Author,
       'Recipient' => $comment->Recipient,
       'Content' => $comment->Content,
-      'Sendtime' => $comment->Sendtime
+      'SendTime' => $comment->SendTime
     );
   }
   echo json_encode($data);
@@ -447,7 +447,7 @@ $app->get('/api/comments/{PostId}',function($PostId) use ($app){
       'Author' => $comment->Author,
       'Recipient' => $comment->Recipient,
       'Content' => $comment->Content,
-      'Sendtime' => $comment->Sendtime
+      'SendTime' => $comment->SendTime
    );
   }
   echo json_encode($data);
@@ -458,13 +458,13 @@ $app->get('/api/comments/{PostId}',function($PostId) use ($app){
 $app->post('/api/comments',function() use ($app){
   $comment = $app->request->getJsonRawBody();
 
-  $phql = "INSERT INTO Comments (PostId, Author, Recipient, Content, Sendtime) VALUES (:PostId:, :Author:, :Recipient:, :Content:, :Sendtime:)";
+  $phql = "INSERT INTO Comments (PostId, Author, Recipient, Content, SendTime) VALUES (:PostId:, :Author:, :Recipient:, :Content:, :SendTime:)";
   $status = $app->modelsManager->executeQuery($phql,array(
       'PostId' => $comment->PostId,
       'Author' => $comment->Author,
       'Recipient' => $comment->Recipient,
       'Content' => $comment->Content,
-      'Sendtime' => $comment->Sendtime
+      'SendTime' => $comment->SendTime
   ));
 
   $response = new Phalcon\Http\Response();
