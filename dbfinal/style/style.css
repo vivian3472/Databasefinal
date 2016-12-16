@@ -43,14 +43,16 @@
 ==================================================*/
 
 html, body {
+/*
   height: 100%;
   width: 100%;
+*/
 }
 
 body{
-	font-family: 'Raleway', sans-serif;
-	color: #6d6e71;
-	font-size: 12px;
+/*	font-family: 'Raleway', sans-serif;*/
+/*	color: #6d6e71;*/
+/*	font-size: 12px;*/
 }
 
 
@@ -123,6 +125,10 @@ section h2.sub-title{
   ==================================================*/
 
 .container{max-width: 1050px;}
+
+.row {
+    font-family: 'Raleway', sans-serif;
+}
 
 section .wrapper{
 	padding-top: 100px;
@@ -702,10 +708,10 @@ textarea{
 .profile-card{
   background: linear-gradient(to bottom, rgba(39,170,225,.8), rgba(28,117,188,.8)), url(../images/covers/1.jpg) no-repeat;
   background-size: cover;
-  width: 100%;
+/*  width: 100%;*/
   min-height: 90px;
   border-radius: 4px;
-  padding: 10px 20px;
+  padding: 10px 10px;
   color: #fff;
   margin-bottom: 40px;
 }
@@ -713,11 +719,10 @@ textarea{
 .profile-card img.profile-photo{
   border: 7px solid #fff;
   float: left;
-  margin-right: 20px;
+  margin-right: 10px;
   position: relative;
-  top: -30px;
-  height: 70px;
-  width: 70px;
+  height: 62px;
+  width: 62px;
   border-radius: 50%;
 }
 
@@ -855,7 +860,7 @@ ul.online-users li span.online-dot{
 .create-post{
   width: 100%;
   min-height: 90px;
-  padding: 20px;
+/*  padding: 20px;*/
   margin-bottom: 20px;
   border-bottom: 1px solid #f1f2f2;
 }
@@ -871,6 +876,8 @@ ul.online-users li span.online-dot{
 
 .create-post .tools{
   padding: 8px 0 10px;
+  margin-left: 30px;
+  margin-top: -10px;
 }
 
 .create-post .tools ul.publishing-tools{
@@ -1380,7 +1387,7 @@ ul.online-users li span.online-dot{
 
 .timeline .post-content .post-date{
   position: absolute;
-  margin-left: -125px;
+  margin-left: -135px;
 }
 
 .timeline .post-content .post-date::before{

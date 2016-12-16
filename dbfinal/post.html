@@ -36,11 +36,11 @@
         	<div class="profile-card">
 <!--            	<img src="images/users/user-1.jpg" alt="user" class="profile-photo" />-->
                 <div id="theDiv"></div>
-            	<h5><a href="timeline.html" id="uname" class="text-white"></a></h5>
-            	<a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 120 followers</a>
+                <h5><a href="timeline.html" id="uname" class="text-white"></a></h5>
+            	<br /><br /><a href="#" class="text-white"><i class="ion ion-android-person-add"></i> 120 followers</a>
         	</div>
         </div>
-               <div class="col-md-8">
+               <div class="col-md-9">
 
               <!-- Post Create Box
               ================================================= -->
@@ -50,7 +50,7 @@
                   <div class="col-md-8 col-sm-8">
                     <div class="form-group">
 <!--                      <img src="images/users/user-1.jpg" alt="" class="profile-photo-md" />-->
-                      <textarea name="texts" id="content" cols="30" rows="2" class="form-control" placeholder="Write what you wish" style = "width : 450px;"></textarea>
+                      <textarea name="texts" id="content" cols="30" rows="2" class="form-control" placeholder="Write what you wish" style = "width : 380px; height: 76px; margin-bottom: 5px;"></textarea>
                         
                     </div>
                   </div>
@@ -71,7 +71,7 @@
                   <div class="col-md-7 col-sm-7">
                     <div class="form-group">
                       <textarea name="texts" id="title" cols="30" rows="1" class="form-control" placeholder="Title" style = "width : 100px;"></textarea>
-                        <textarea name="texts" id="image" cols="30" rows="1" class="form-control" placeholder="Paste Image link here" style = "width : 350px;"></textarea>
+                        <textarea name="texts" id="image" cols="30" rows="1" class="form-control" placeholder="Paste Image link here" style = "width : 300px;"></textarea>
                         <div class="input-group">
     				<div id="radioBtn" class="btn-group">
     					<a class="btn btn-primary btn-sm active" data-title="Y" data-toggle="happy" id="Public">Public</a>
@@ -102,13 +102,13 @@
 
     </div>
 </div>
+<!-- Footer -->
+<div class="footer"></div>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
 <script>
 //     $("#page-contents").append("<div>hello world</div>");
-    
     $(document).ready(function(){ $('.header').load("header.html"); });
-    
-//    $(document).ready(function(){ $('.footer').load("footer.html"); });
+    $(document).ready(function(){ $('.footer').load("footer.html"); });
 </script>
     
 <script>
@@ -176,7 +176,7 @@
             .append("li")
             .attr("class", "well")
             .html(function(d) {
-                return ' <div class="post-date hidden-xs "><h5>' +d.UserId+ '</h5><p class="text-grey">'+ d.PostTime+ '</p></div><div class="row"> <div class="col-xs-2"><img src='+ tmp +' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> </div> '
+                return ' <div class="post-date hidden-xs col-xs-2"><h5>' +d.UserId+ '</h5><p class="text-grey">'+ d.PostTime+ '</p></div><div class="row"> <div class="col-xs-2"><img src='+ tmp +' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname">' +d.UserId+ '</p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.Image+' class="postimg"> <div class="col-xs-8"><a href=""><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg"></a>'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div> </div> '
             })
             
         selection.exit().remove();
@@ -300,9 +300,9 @@
         border: 0;
     }
     .timeline .post-content::before {
-        height: 92%;
+        height: 94%;
         top: 27px;
-        left: -135px;
+        left: -145px;
     }
     .timeline .post-content .post-date::before {
         top: 0;
@@ -313,7 +313,7 @@
     background-color: #fff;
     }
     #radioBtn {
-        padding-left: 10px;
+        padding-left: 5px;
         padding-top: 2px;
     }
 </style>
