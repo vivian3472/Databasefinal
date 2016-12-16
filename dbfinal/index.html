@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <!-- If IE use the latest rendering engine -->
@@ -9,11 +9,11 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <title>NYU Community - Homepage</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<!--    <link href="footer.css" rel="stylesheet">-->
+    <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
 
 <style type="text/css">
-    .form-control{
+    .form-control {
         box-shadow: none;
         height: 34px;
         margin: 5px 0;
@@ -24,10 +24,11 @@
         padding-left: 30px;
     }
 </style>
+
 <body>
-<!-- Header: Navbar -->
-<div class="header"></div>
-<!--
+    <!-- Header: Navbar -->
+    <div class="header"></div>
+    <!--
 <script language="php">
 session_start();
 echo "22";
@@ -39,163 +40,185 @@ $_SESSION['username'] = $var_value;
 
 </script>    
 -->
-<script>
+    <script>
+    </script>
 
-</script>
-
-<!-- Body: Container -->
-<div class="container-fluid">
-    <!-- ROW  -->
-    <div class="row">
-        <!-- Left pannel: Empty  -->
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <div class="container-fluid">
+    <!-- Body: Container -->
+    <div class="container-fluid">
+        <!-- ROW  -->
+        <div class="row">
+            <!-- Left pannel: Empty  -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="container-fluid">
+                </div>
             </div>
-        </div><!-- END of Left pannel  -->
+            <!-- END of Left pannel  -->
 
-        <!-- Right pannel: News  -->
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <h4 style = "color: #000">News</h4>
-            <div class="container-fluid acti-List" id="acti-List">
+            <!-- Right pannel: News  -->
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <h4 style="color: #000">News</h4>
+                <div class="container-fluid acti-List" id="acti-List">
+                </div>
             </div>
-    	</div><!-- END of Right pannel  -->
-        
-        <!-- Right pannel: Empty  -->
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-            <div class="container-fluid">
+            <!-- END of Right pannel  -->
+
+            <!-- Right pannel: Empty  -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="container-fluid">
+                </div>
             </div>
-        </div><!-- END of Right pannel  -->
-    </div><!-- END of ROW -->
-</div><!-- END of Body: Container -->
-    
-<!-- Footer -->
-<div class="footer"></div>
+            <!-- END of Right pannel  -->
+        </div>
+        <!-- END of ROW -->
+    </div>
+    <!-- END of Body: Container -->
 
-<!-- SCRIPT -->
-<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function(){ $('.header').load("header.html"); });
-    $(document).ready(function(){ $('.footer').load("footer.html"); });
-</script>
+    <!-- Footer -->
+    <div class="footer"></div>
 
-<script>
-    var data_global;
-    
-    function getcomments(postid, callbackFunction){
-        var theurl = "http://localhost:8888/dbfinal/api/comments/" + postid;
-        console.log(theurl);
-        $.ajax(
-        {
-            url: theurl,
-            type: 'GET',
-            dataType: 'json',
-            accept: 'application/json',
-            success: function(data)
-            {
-//                console.log(data);
-                if(typeof callbackFunction == 'function')
-                {
-                    callbackFunction.call(this, data);
-                }
-            }
+    <!-- SCRIPT -->
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.header').load("header.html");
         });
-    }
-    
-    function renderList_cmt(data) {
-        getcomments(data, function(data_cmt){
-            var idname = "#cmtof"+data;
-            var selection = d3.select(idname).selectAll("li")
-                .data(data_cmt, function (d) {
-                    console.log(d);
+        $(document).ready(function () {
+            $('.footer').load("footer.html");
+        });
+    </script>
+
+    <script>
+        var data_global;
+
+        function getcomments(postid, callbackFunction) {
+            var theurl = "http://localhost:8888/dbfinal/api/comments/" + postid;
+//            console.log(theurl);
+            $.ajax({
+                url: theurl,
+                type: 'GET',
+                dataType: 'json',
+                accept: 'application/json',
+                success: function (data) {
+//                    console.log(data);
+                    if (typeof callbackFunction == 'function') {
+                        callbackFunction.call(this, data);
+                    }
+                }
+            });
+        }
+
+        function renderList_cmt(data) {
+            getcomments(data, function (data_cmt) {
+                var idname = "#cmtof" + data;
+                var selection = d3.select(idname).selectAll("p")
+                    .data(data_cmt, function (d) {
+//                        console.log(d);
+                        return d.PostId;
+                    });
+                selection.enter()
+                    .append("p")
+                    .attr("class", "commenttext")
+                    .html(function (d) {
+//                        console.log(d);
+                        return '' + d.Author + ": " + d.Content;
+                    })
+            })
+
+        }
+
+        function renderList(data) {
+            //        console.log(data);
+            var selection = d3.select("#acti-List").selectAll("li")
+                .data(data, function (d) {
                     return d.PostId;
                 });
             selection.enter()
-            .append("p")
-            .attr("class", "commenttext")
-            .html(function(d) {
-                return ''+d.Author+": "+d.Content;
-            })
+                .append("li")
+                .attr("class", "well")
+                .html(function (d) {
+                    //console.log(d.PostId);
+                    renderList_cmt(d.PostId);
+                    return ' <div class="row"> <div class="col-xs-2"><img src=' + d.uImage + ' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="' + d.UserId + '">' + d.UserId + '</a></p><p>' + d.Longitude + ', ' + d.Latitude + '</p></div> <div class="col-xs-3"><p> ' + d.PostTime + '</p></div><img src=' + d.nImage + ' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof' + d.PostId + '" onclick="changeImage(this.id)" />' + d.LikeNum + ' Likes <p class="commenttext">' + d.UserId + ': ' + d.Text + '</p></div><div class="col-xs-8" id=cmtof' + d.PostId + '></div> <input type="text" class="form-control" placeholder="Post a comment here..."></div> '
+                })
+                //http://pngimg.com/upload/heart_PNG706.png
+            selection.exit().remove();
+        }
+        d3.json('http://localhost:8888/dbfinal/api/news/', function (error, data) {
+            data_global = data;
+            renderList(data_global);
         })
-        
-    }
-    function renderList(data) {
-//        console.log(data);
-        var selection = d3.select("#acti-List").selectAll("li")
-            .data(data, function (d) {
-                return d.PostId;
-            });
-        selection.enter()
-            .append("li")
-            .attr("class", "well")
-            .html(function(d) {
-//                console.log(d.PostId);
-                renderList_cmt(d.PostId);
-                return ' <div class="row"> <div class="col-xs-2"><img src='+d.uImage+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="'+d.UserId+'">' +d.UserId+ '</a></p><p>' +d.Longitude+', '+d.Latitude+ '</p></div> <div class="col-xs-3"><p> '+ d.PostTime+ '</p></div><img src='+d.nImage+' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof'+d.PostId+'" onclick="changeImage(this.id)" />'+d.LikeNum+' Likes <p class="commenttext">' +d.UserId+ ': '+d.Text+'</p></div><div class="col-xs-8" id=cmtof'+d.PostId+'></div> <input type="text" class="form-control" placeholder="Post a comment here..."></div> '
-            })
-            //http://pngimg.com/upload/heart_PNG706.png
-        selection.exit().remove();
-    }
-    d3.json('http://localhost:8888/dbfinal/api/news/', function (error, data) {
-        data_global = data;
-        renderList(data_global);
-    })
-    
-    function seeProfile(element){
-        var keyword = element;
-        window.location.href="search.html?id="+id+"#search="+keyword;return false;
-    }
-    function changeImage(element) {
-//        if (document.getElementById("likeimg").src == "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png") {
-        document.getElementById(element).src = "http://pngimg.com/upload/heart_PNG706.png";
-//        }
-//        else{
-//            document.getElementById("likeimg").src = "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png";
-//        }
-    }
-</script>
-<style>
-    .acti-List li {
-        list-style: none; 
-        margin-bottom: 10px;
-        margin-left: 0px;
-/*        height: 150px;*/
-        box-shadow: inset 2px 2px 1px rgba(0,0,0,.05),2px 2px 1px rgba(0,0,0,.05);
 
-    }
-    #acti-List {
-        margin-left: 0;
-        padding-right: 20px;
-        margin-right: 10px;
-        padding-left: 0;
-    }
-    .postname {
-        font-size: 16px;
-        font-weight: bold;
-    }
-    .postimg {
-        width: 100%;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .likenum {
-        padding-left: 15px;
-    }
-    .likeimg {
-        width: 30px;
-        padding-right: 10px;
-        padding-bottom: 5px;
-    }
-    .hovereffect img:hover{
-        cursor: pointer;
-    }
-    .commenttext {
-        font-size: 16px;
-    }
-    .hovereffect a:hover{
-        cursor: pointer;
-    }
-</style>
+        function seeProfile(element) {
+            var keyword = element;
+            if (keyword == id) {
+                window.location.href = "profile.html?id=" + id;
+                return false;
+            } else {
+                window.location.href = "search.html?id=" + id + "#search=" + keyword;
+                return false;
+            }
+        }
+
+        function changeImage(element) {
+            //        if (document.getElementById("likeimg").src == "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png") {
+            document.getElementById(element).src = "http://pngimg.com/upload/heart_PNG706.png";
+            //        }
+            //        else{
+            //            document.getElementById("likeimg").src = "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png";
+            //        }
+        }
+    </script>
+    <style>
+        .acti-List li {
+            list-style: none;
+            margin-bottom: 10px;
+            margin-left: 0px;
+            /*        height: 150px;*/
+            box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .05), 2px 2px 1px rgba(0, 0, 0, .05);
+        }
+        
+        #acti-List {
+            margin-left: 0;
+            padding-right: 20px;
+            margin-right: 10px;
+            padding-left: 0;
+        }
+        
+        .postname {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .postimg {
+            width: 100%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+        .likenum {
+            padding-left: 15px;
+        }
+        
+        .likeimg {
+            width: 30px;
+            padding-right: 10px;
+            padding-bottom: 5px;
+        }
+        
+        .hovereffect img:hover {
+            cursor: pointer;
+        }
+        
+        .commenttext {
+            font-size: 16px;
+        }
+        
+        .hovereffect a:hover {
+            cursor: pointer;
+        }
+    </style>
 </body>
+
 </html>

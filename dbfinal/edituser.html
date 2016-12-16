@@ -1,115 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
-	<head>
-		<title>NYU Community</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<head>
+    <meta charset="utf-8">
+    <!-- If IE use the latest rendering engine -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set the page to the width of the device and set the zoon level -->
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>NYU Community - Edit Profile</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/stylesheet.css">
+    <!--        <link href="footer.css" rel="stylesheet">-->
+</head>
 
-		<link rel="stylesheet" href="style/icon.css">
-		<link rel="stylesheet" href="style/loader.css">
-		<link rel="stylesheet" href="style/idangerous.swiper.css">
-		<link rel="stylesheet" href="style/stylesheet.css">
-	</head>
-	<body >
-<div class="header"></div>
+<script>
+    var id = /id=([^&]+)/i.exec(location.search);
+    if (id) id = id[1];
+    else id = '';
+    //alert(id);
+</script>
 
-	
-		<!-- THE HEADER -->
+<body>
+    <!-- Header: Navbar -->
+    <div class="header"></div>
 
+    <!-- MAIN CONTENT -->
+    <div id="content-block">
+        <div class="container be-detail-container">
+            <div class="row">
+                <div class="col-xs-12 col-md-12 _editor-content_">
+                    <div class="affix-block" id="basic-information">
+                        <div class="be-large-post">
+                            <div class="info-block style-2">
+                                <div class="be-large-post-align">
+                                    <h4 style="color: #333">Basic Information</h4>
+                                </div>
+                            </div>
+                            <div class="be-large-post-align">
+                                <div class="row">
+                                    <form id="register-form" method="post" role="form">
+                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="email" tabindex="1" class="form-control form-input" placeholder="Email Address" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="profimage" id="profimage" tabindex="1" class="form-control form-input" placeholder="Image Link">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="age" id="age" tabindex="1" class="form-control form-input" placeholder="Age" value="">
+                                            </div>
 
-	<!-- MAIN CONTENT -->
-	<div id="content-block">
-		<div class="container be-detail-container">
-			<div class="row">
-				
-				<div class="col-xs-12 col-md-9 _editor-content_">
-					<div class="affix-block" id="basic-information">
-						<div class="be-large-post">
-							<div class="info-block style-2">
-								<div class="be-large-post-align"><h3 class="info-block-label">Basic Information</h3></div>
-							</div>
-							<div class="be-large-post-align">
-								<div class="be-change-ava">
-									<a class="be-ava-user style-2" href="">
-										photo & username
-									</a>
-									<a class="btn color-4 size-2 hover-7">replace image</a>
-								</div>
-							</div>
-							<div class="be-large-post-align">
-								<div class="row">
-									<div class="input-col col-xs-12 col-sm-6">
-										<div class="form-group fg_icon focus-2">
-											<div class="form-label">User Name</div>
-											<input class="form-input" type="text" value="">
-										</div>							
-									</div>
-									
-									<div class="input-col col-xs-12">
-										<div class="form-group focus-2">
-											<div class="form-label">Image URL</div>									
-											<input class="form-input" type="text" value="">
-										</div>								
-									</div>
-									<div class="input-col col-xs-12">
-										<div class="form-group focus-2">
-											<div class="form-label">Email address</div>									
-											<input class="form-input" type="text" placeholder="">
-										</div>								
-									</div>
-									<div class="input-col col-xs-12 col-sm-6">
-										<div class="form-group focus-2">
-											<div class="form-label">Country</div>									
-											<input class="form-input" type="text" value="United States">
-										</div>	
-									</div>
-									<div class="input-col col-xs-12 col-sm-6">
-										<div class="form-group focus-2">
-											<div class="form-label">City</div>									
-											<input class="form-input" type="text" value="New York">
-										</div>								
-									</div>
-								
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="affix-block" id="edit-password">
-						<div class="be-large-post">
-							<div class="info-block style-2">
-								<div class="be-large-post-align"><h3 class="info-block-label">Password</h3></div>
-							</div>
-							<div class="be-large-post-align">
-								<div class="row">
-									<div class="input-col col-xs-12 col-sm-4">
-										<div class="form-group focus-2">
-											<div class="form-label">Old Password</div>									
-											<input class="form-input" type="password" placeholder="">
-										</div>								
-									</div>
-									<div class="input-col col-xs-12 col-sm-4">
-										<div class="form-group focus-2">
-											<div class="form-label">New Password</div>									
-											<input class="form-input" type="password" placeholder="">
-										</div>								
-									</div>
-									<div class="input-col col-xs-12 col-sm-4">
-										<div class="form-group focus-2">
-											<div class="form-label">Repeat Password</div>									
-											<input class="form-input" type="password" placeholder="">
-										</div>								
-									</div>
-									<div class="col-xs-12">
-										<a class="btn color-1 size-2 hover-1 btn-right">change password</a>
-									</div>																
-								</div>
-							</div>
-						</div>
-					</div>											
+                                        </div>
 
-	
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <input type="submit" name="update-submit" id="update-submit" tabindex="6" class="form-control btn btn-update" value="Update">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="affix-block" id="edit-password">
+                        <div class="be-large-post">
+                            <div class="info-block style-2">
+                                <div class="be-large-post-align">
+                                    <h4 style="color: #333">Password</h4>
+                                </div>
+                            </div>
+                            <div class="be-large-post-align">
+                                <div class="row">
+                                    <form id="register-form" method="post" role="form">
+                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <div class="form-group">
+                                                <input type="password" name="old-password" id="oldpassword" tabindex="2" class="form-control form-input" placeholder="Old Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" name="new-password" id="newpassword" tabindex="2" class="form-control form-input" placeholder="New Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control form-input" placeholder="Confirm Password">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <input type="submit" name="changepwd-submit" id="changepwd-submit" tabindex="6" class="form-control btn btn-update" value="Change Password">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	</body>
+    <!-- Footer -->
+    <div class="footer"></div>
+
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.header').load("header.html");
+        });
+        $(document).ready(function () {
+            $('.footer').load("footer.html");
+        });
+
+        $(document).ready(function () {
+            $('#update-submit').click(function (e) {
+                console.log("button pressed");
+                //                 console.log($('#userid').val());
+                var part1 = $('#email').val();
+                var part2 = $('#profimage').val();
+                var part3 = parseInt($('#age').val());
+                console.log(part1);
+                sendData();
+
+                function sendData() {
+                    formData = {
+                        "UserId": id,
+                        "Age": part3,
+                        "Image": part2,
+                        "Email": part1,
+                    }
+                    console.log(JSON.stringify(formData));
+
+                    $.ajax({
+                        url: "http://localhost:8888/dbfinal/api/user" + id,
+                        type: 'PUT',
+                        data: JSON.stringify(formData),
+                        success: function (data) {
+                            console.log("success");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log("error");
+                        }
+                    });
+                }
+            });
+        });
+
+        function getuser(theUrl, callbackFunction) {
+            $.ajax({
+                url: theUrl,
+                type: 'GET',
+                dataType: 'json',
+                accept: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                    if (typeof callbackFunction == 'function') {
+                        callbackFunction.call(this, data);
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#changepwd-submit').click(function (e) {
+                console.log("button pressed");
+                //                 console.log($('#userid').val());
+                var part1 = $('#oldpassword').val();
+                var part2 = $('#newpassword').val();
+                var part3 = $('#confirm-password').val();
+                console.log(part1);
+
+                getuser("http://localhost:8888/dbfinal/api/user/" + id, function (data) {
+                    console.log(data);
+                    tmp = data[0].Password;
+                    var message;
+                    if (tmp == part1) {
+                        if (part2 == part3 && part2 != '') {
+                            sendData();
+                            message = id + "'s password is changed. ";
+                        } else {
+                            message = id + "'s old password is correct, but password is not changed. ";
+                        }
+                    } else {
+                        message = id + "'s old password is not correct. ";
+                    }
+                    alert(message);
+                    location.reload();
+                });
+
+                function sendData() {
+                    formData = {
+                        "UserId": id,
+                        "Password": part2
+                    }
+                    console.log(JSON.stringify(formData));
+
+                    $.ajax({
+                        url: "http://localhost:8888/dbfinal/api/user" + id,
+                        type: 'PUT',
+                        data: JSON.stringify(formData),
+                        success: function (data) {
+                            console.log("success");
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log("error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <style>
+        .btn-update {
+            background-color: #59B2E0;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            height: auto;
+            width: 160px;
+            font-weight: normal;
+            padding: 12px 0;
+            border-color: #59B2E0;
+        }
+        
+        .btn-update:hover,
+        .btn-update:focus {
+            color: #fff;
+            background-color: #59BFE0;
+            border-color: #59B2E0;
+        }
+    </style>
+</body>
+
 </html>
