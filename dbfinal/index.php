@@ -192,7 +192,7 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 //GET Post
 $app->get('/api/news',function() use($app){
 
-  $phql = "SELECT * FROM News";
+  $phql = "SELECT PostId, n.UserId, Text, n.Image as nImage, PostTime, Longitude, Latitude, Setting, LikeNum, u.Image as uImage FROM News as n left join User as u on n.UserId=u.UserId";
   $news = $app->modelsManager->executeQuery($phql);
   $data = array();
   foreach($news as $new){
@@ -200,12 +200,13 @@ $app->get('/api/news',function() use($app){
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
     'Text' => $new->Text,
-    'Image' => $new->Image,
+    'nImage' => $new->nImage,
     'PostTime' => $new->PostTime,
     'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
-    'LikeNum' => $new->LikeNum
+    'LikeNum' => $new->LikeNum,
+    'uImage' => $new->uImage
     );
   }
   echo json_encode($data);
