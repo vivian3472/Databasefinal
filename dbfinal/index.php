@@ -200,7 +200,7 @@ $app->get('/api/news',function() use($app){
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
     'Text' => $new->Text,
-    'nImage' => $new->nImage,
+    'Image' => $new->Image,
     'PostTime' => $new->PostTime,
     'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
@@ -217,6 +217,7 @@ $app->get('/api/allnews',function() use($app){
 
   $phql = "SELECT n.PostId, UserId, Text, Image, PostTime, Longitude, Latitude, Setting, LikeNum, Author, SendTime, Content FROM News as n left join Comments as c on n.PostId=c.PostId";
   $news = $app->modelsManager->executeQuery($phql);
+  echo json_encode($news);
   $data = array();
   foreach($news as $new){
     $data[] = array(
@@ -565,6 +566,7 @@ $app->post('/api/invite',function() use ($app){
 $app->delete('/api/invite/{UserId}/{Invitor}',function($UserId, $Invitor) use ($app){
 
   $phql = "DELETE FROM Invitation WHERE UserId = :UserId: and Invitor = :Invitor: ";
+  // echo json_encode($Invitor);
   $status = $app->modelsManager->executeQuery($phql,array(
       'UserId' => $UserId,
       'Invitor' => $Invitor
