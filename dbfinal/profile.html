@@ -9,6 +9,8 @@
     <meta name="viewport" content="width = device-width, initial-scale = 1">
     <title>NYU Community - Profile</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
 <!--    <link href="footer.css" rel="stylesheet">-->
 </head>
 <body>
@@ -52,7 +54,19 @@ $var_value = $_SESSION['username'];
         </div><!-- END of Right pannel  -->
     </div><!-- END of ROW -->
 </div><!-- END of Body: Container -->
+    <div id='map' style='width: 400px; height: 300px; left: 30%;'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoidml2aWFuMzQ3MiIsImEiOiJjaWxkenR3aDAwZWswdmFtY2o2bWsxNnRpIn0.JShAywmg1Rlk4whs0qcX-w';
+var map = new mapboxgl.Map({
+    container: 'map',
+    center: [-73.9855798, 40.6948668],
+    style: 'mapbox://styles/mapbox/streets-v9',
+    zoom: 10
+});
     
+map.addControl(new mapboxgl.GeolocateControl());
+
+</script>
 
 <!-- Footer -->
 <div class="footer"></div>
@@ -79,20 +93,15 @@ $var_value = $_SESSION['username'];
         selection.enter()
             .append("div")
             .html(function(d) {
-                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div><div class="col-xs-3 hovereffect"><a onclick="myEditProf()">Edit profile</a></div> </div> '
+                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div> </div> '
             })
             
         selection.exit().remove();
     }
     d3.json('http://localhost:8888/dbfinal/api/user/'+iname, function (error, data) {
-        if (iname == ''){
-            data_profile = '';
-        }
-        else {
-            data_profile = data;
-    //        console.log(data_profile);
-            renderList(data_profile);
-            }
+        data_profile = data;
+//        console.log(data_profile);
+        renderList(data_profile);
     })
     function getuser(theUrl, callbackFunction){
         $.ajax(
@@ -120,15 +129,9 @@ $var_value = $_SESSION['username'];
 //          auth(tmp, iPassword);
         });
     });
-    function myEditProf(){
-        href="edituser.html";
-        location.href=this.href+"?id="+id;return false; 
-    }
 </script>
 <style>
-    .hovereffect a:hover{
-        cursor: pointer;
-    }
+    
 </style>
 </body>
 </html>
