@@ -94,14 +94,14 @@ $_SESSION['username'] = $var_value;
 
         function getcomments(postid, callbackFunction) {
             var theurl = "http://localhost:8888/dbfinal/api/comments/" + postid;
-//            console.log(theurl);
+            //            console.log(theurl);
             $.ajax({
                 url: theurl,
                 type: 'GET',
                 dataType: 'json',
                 accept: 'application/json',
                 success: function (data) {
-//                    console.log(data);
+                    //                    console.log(data);
                     if (typeof callbackFunction == 'function') {
                         callbackFunction.call(this, data);
                     }
@@ -114,14 +114,14 @@ $_SESSION['username'] = $var_value;
                 var idname = "#cmtof" + data;
                 var selection = d3.select(idname).selectAll("p")
                     .data(data_cmt, function (d) {
-//                        console.log(d);
+                        //                        console.log(d);
                         return d.PostId;
                     });
                 selection.enter()
                     .append("p")
                     .attr("class", "commenttext")
                     .html(function (d) {
-//                        console.log(d);
+                        //                        console.log(d);
                         return '' + d.Author + ": " + d.Content;
                     })
             })
@@ -140,7 +140,7 @@ $_SESSION['username'] = $var_value;
                 .html(function (d) {
                     //console.log(d.PostId);
                     renderList_cmt(d.PostId);
-                    return ' <div class="row"> <div class="col-xs-2"><img src=' + d.uImage + ' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="' + d.UserId + '">' + d.UserId + '</a></p><p>' + d.Longitude + ', ' + d.Latitude + '</p></div> <div class="col-xs-3"><p> ' + d.PostTime + '</p></div><img src=' + d.nImage + ' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof' + d.PostId + '" onclick="changeImage(this.id)" />' + d.LikeNum + ' Likes <p class="commenttext">' + d.UserId + ': ' + d.Text + '</p></div><div class="col-xs-8" id=cmtof' + d.PostId + '></div> <input type="text" class="form-control" placeholder="Post a comment here..."></div> '
+                    return ' <div class="row"> <div class="col-xs-2"><img src=' + d.uImage + ' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="' + d.UserId + '">' + d.UserId + '</a></p><p>' + d.Longitude + ', ' + d.Latitude + '</p></div> <div class="col-xs-3"><p> ' + d.PostTime + '</p></div><img src=' + d.nImage + ' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof' + d.PostId + '" onclick="changeLikeImage(this.id)" />' + d.LikeNum + ' Likes <img src="https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png" class="likeimg" id="dislikeimgof' + d.PostId + '" onclick="changeDisImage(this.id)" />' + d.DislikeNum + ' Dislikes  <p class="commenttext">' + d.UserId + ': ' + d.Text + '</p></div><div class="col-xs-8" id=cmtof' + d.PostId + '></div> <input type="text" class="form-control" placeholder="Post a comment here..." id=addcmt' + d.PostId + '></div> '
                 })
                 //http://pngimg.com/upload/heart_PNG706.png
             selection.exit().remove();
@@ -161,14 +161,37 @@ $_SESSION['username'] = $var_value;
             }
         }
 
-        function changeImage(element) {
-            //        if (document.getElementById("likeimg").src == "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png") {
-            document.getElementById(element).src = "http://pngimg.com/upload/heart_PNG706.png";
-            //        }
-            //        else{
-            //            document.getElementById("likeimg").src = "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png";
-            //        }
+        function changeLikeImage(element) {
+            if (document.getElementById(element).src == "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png") {
+                document.getElementById(element).src = "http://pngimg.com/upload/heart_PNG706.png";
+            } else {
+                document.getElementById(element).src = "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png";
+            }
         }
+
+        function changeDisImage(element) {
+            if (document.getElementById(element).src == "https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png") {
+                document.getElementById(element).src = "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-1/128/thumbs-down-512.png";
+            } else {
+                document.getElementById(element).src = "https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png";
+            }
+        }
+//        document.querySelector('#search').addEventListener('keypress', function (e) {
+//            var key = e.which || e.keyCode;
+//            keyword = '';
+//            if (key === 13) { // 13 is enter
+//                // code for enter
+//                keyword = $('#search').val();
+//                if (keyword == id) {
+//                    window.location.href = "profile.html?id=" + id;
+//                    return false;
+//                } else {
+//                    location.reload();
+//                    window.location.href = "search.html?id=" + id + "#search=" + keyword;
+//                    return false;
+//                }
+//            }
+//        });
     </script>
     <style>
         .acti-List li {

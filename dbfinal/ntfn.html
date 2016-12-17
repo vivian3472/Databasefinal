@@ -78,8 +78,9 @@ $var_value = $_SESSION['username'];
         selection.enter()
             .append("li")
             .attr("class", "well")
+            .attr("id", function(d, i) { var cid="main"+d.Invitor; return cid; })
             .html(function(d) {
-                return '<div class="row"><div class="col-xs-8 hovereffect">Inviter: <a onclick="seeProfile(this.id)" id="'+d.Invitor+'">'+d.Invitor+'</a></div><div class="col-xs-2 hovereffect"><a onclick="acptRq(this.id)" id="'+d.Invitor+'"><p>Accept</p></a></div><div class="col-xs-2 hovereffect"><a onclick="ignrRq(this.id)" id="'+d.Invitor+'"><p>Ignore</p></a></div></div>'
+                return '<div class="row"><div class="col-xs-8 hovereffect">Inviter: <a onclick="seeProfile(this.id)" id="'+d.Invitor+'">'+d.Invitor+'</a></div><div class="col-xs-2 hovereffect"><a onclick="acptRq(this)" id="'+d.Invitor+'"><p>Accept</p></a></div><div class="col-xs-2 hovereffect"><a onclick="ignrRq(this)" id="'+d.Invitor+'"><p>Ignore</p></a></div></div>'
             })
             
         selection.exit().remove();
@@ -93,11 +94,12 @@ $var_value = $_SESSION['username'];
         window.location.href="search.html?id="+id+"#search="+keyword;return false;
     }
     function acptRq(element){
-        var name = element;
-        var message = "Your accept the request from "+name+"! ";
+        var parent = element.parentNode.parentNode.parentNode;
+        var message = "Your accept the request from "+element.id+"! ";
+        document.getElementById(parent.id).style.visibility = "hidden";
         alert(message);
-        sendData(id, name);
-        sendData(name, id);
+        sendData(id, element.id);
+        sendData(element.id, id);
         
         function sendData(name1, name2) {
             formData = {
@@ -119,15 +121,15 @@ $var_value = $_SESSION['username'];
                 }
             });
         }
-        
-        location.reload();
+//        location.reload();
     }
     function ignrRq(element){
-        var name = element;
-        var message = "Your ignore the request from "+name+"! ";
+        var parent = element.parentNode.parentNode.parentNode;
+//        alert(parent.id);
+        var message = "Your ignore the request from "+element.id+"! ";
         alert(message);
-        
-        location.reload();
+        document.getElementById(parent.id).style.visibility = "hidden";
+//        location.reload();
     }
 </script>
 <style>
