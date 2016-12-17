@@ -42,13 +42,13 @@
                                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 
                                             <div class="form-group">
-                                                <input type="email" name="email" id="email" tabindex="1" class="form-control form-input" placeholder="Email Address" value="">
+                                                Email Address:<input type="email" name="email" id="email" tabindex="1" class="form-control form-input" placeholder="Email Address" value="">
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" name="profimage" id="profimage" tabindex="1" class="form-control form-input" placeholder="Image Link">
+                                                Image Link:<input type="text" name="profimage" id="profimage" tabindex="1" class="form-control form-input" placeholder="Image Link">
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" name="age" id="age" tabindex="1" class="form-control form-input" placeholder="Age" value="">
+                                                Age:<input type="text" name="age" id="age" tabindex="1" class="form-control form-input" placeholder="Age" value="">
                                             </div>
 
                                         </div>
@@ -116,6 +116,35 @@
         $(document).ready(function () {
             $('.footer').load("footer.html");
         });
+var tmp;
+            $(document).ready(function() {
+//        iname = "Yuwei2";
+        getuser("http://localhost:8888/dbfinal/api/user/" + id, function(data){
+            var im = data[0].Image;
+            var em = data[0].Email;
+            var ag = data[0].Age;
+            tmp = data[0].Password;
+            // console.log(tmp);
+            $('#profimage').prepend('input').val(im);
+            $('#email').prepend('input').val(em);
+            $('#age').prepend('input').val(ag);
+                    // var img = $('<img />', { 
+                    //     id: 'Myid',
+                    //     class: 'profile-photo',
+                    //     src: tmp,
+                    //     alt: 'user'
+                    // });
+                    // img.appendTo($('#theDiv'));
+                // $('#uname').prepend(data[0].UserId);
+             
+        });
+    });
+    
+
+
+
+
+
 
         $(document).ready(function () {
             $('#update-submit').click(function (e) {
@@ -124,7 +153,7 @@
                 var part1 = $('#email').val();
                 var part2 = $('#profimage').val();
                 var part3 = parseInt($('#age').val());
-                console.log(part1);
+                // console.log(part1);
                 sendData();
 
                 function sendData() {
@@ -132,16 +161,17 @@
                         "UserId": id,
                         "Age": part3,
                         "Image": part2,
+                        "Password": tmp,
                         "Email": part1,
                     }
-                    console.log(JSON.stringify(formData));
+                    // console.log(JSON.stringify(formData));
 
                     $.ajax({
-                        url: "http://localhost:8888/dbfinal/api/user" + id,
+                        url: "http://localhost:8888/dbfinal/api/user/" + id,
                         type: 'PUT',
                         data: JSON.stringify(formData),
                         success: function (data) {
-                            console.log("success");
+                            alert("success");
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log("error");
@@ -170,6 +200,9 @@
             $('#changepwd-submit').click(function (e) {
                 console.log("button pressed");
                 //                 console.log($('#userid').val());
+                var em = $('#email').val();
+                var im = $('#profimage').val();
+                var ag = parseInt($('#age').val());
                 var part1 = $('#oldpassword').val();
                 var part2 = $('#newpassword').val();
                 var part3 = $('#confirm-password').val();
@@ -177,7 +210,7 @@
 
                 getuser("http://localhost:8888/dbfinal/api/user/" + id, function (data) {
                     console.log(data);
-                    tmp = data[0].Password;
+                    // tmp = data[0].Password;
                     var message;
                     if (tmp == part1) {
                         if (part2 == part3 && part2 != '') {
@@ -196,7 +229,10 @@
                 function sendData() {
                     formData = {
                         "UserId": id,
-                        "Password": part2
+                        "Password": part2,
+                        "Age" : ag,
+                        "Email" : em,
+                        "Image" : im
                     }
                     console.log(JSON.stringify(formData));
 
