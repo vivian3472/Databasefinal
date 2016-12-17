@@ -81,8 +81,13 @@
         if (key === 13) { // 13 is enter
           // code for enter
             keyword = $('#search').val();
-            location.reload();
-            window.location.href="search.html?id="+id+"#search="+keyword;return false;
+            if (keyword==id){
+                window.location.href="profile.html?id="+id;return false;
+            }
+            else{
+                location.reload();
+                window.location.href="search.html?id="+id+"#search="+keyword;return false;
+            }
         }
     });
 </script>

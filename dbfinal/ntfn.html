@@ -79,7 +79,7 @@ $var_value = $_SESSION['username'];
             .append("li")
             .attr("class", "well")
             .html(function(d) {
-                return '<div class="row"><div class="col-xs-8 hovereffect">Invitor: <a onclick="seeProfile(this.id)" id="'+d.Invitor+'">'+d.Invitor+'</a></div><div class="col-xs-2 hovereffect"><a onclick="acptRq(this.id)" id="'+d.Invitor+'"><p>Accept</p></a></div><div class="col-xs-2 hovereffect"><a onclick="ignrRq(this.id)" id="'+d.Invitor+'"><p>Ignore</p></a></div></div>'
+                return '<div class="row"><div class="col-xs-8 hovereffect">Inviter: <a onclick="seeProfile(this.id)" id="'+d.Invitor+'">'+d.Invitor+'</a></div><div class="col-xs-2 hovereffect"><a onclick="acptRq(this.id)" id="'+d.Invitor+'"><p>Accept</p></a></div><div class="col-xs-2 hovereffect"><a onclick="ignrRq(this.id)" id="'+d.Invitor+'"><p>Ignore</p></a></div></div>'
             })
             
         selection.exit().remove();

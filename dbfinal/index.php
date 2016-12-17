@@ -200,7 +200,7 @@ $app->get('/api/news',function() use($app){
     'PostId' => $new->PostId,
     'UserId' => $new->UserId,
     'Text' => $new->Text,
-    'Image' => $new->Image,
+    'nImage' => $new->nImage,
     'PostTime' => $new->PostTime,
     'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
