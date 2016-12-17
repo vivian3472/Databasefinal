@@ -366,6 +366,68 @@ $app->put('/api/news/{PostId}',function($PostId) use ($app){
 
 });
 
+//GET post likenum by postID(update later)
+$app->get('/api/news/{PostId}/likenum',function($PostId) use ($app){
+
+  $phql = "SELECT PostId, LikeNum FROM News WHERE PostId = :PostId: ORDER BY PostId";
+  $news = $app->modelsManager->executeQuery($phql,array(
+    'PostId' => $PostId
+  ));
+
+  $data = array();
+  foreach($news as $new){
+    $data[] = array(
+    'PostId' => $new->PostId,
+    'LikeNum' => $new->LikeNum
+   );
+  }
+  echo json_encode($data);
+});
+
+//Update Likenum
+$app->put('/api/news/{PostId}/likenum',function($PostId) use ($app){
+echo json_encode('success');
+  $news = $app->request->getJsonRawBody();
+//  echo json_encode($PostId);
+  $phql = "UPDATE News SET LikeNum = :LikeNum: WHERE PostId = :PostId:";
+  $status = $app->modelsManager->executeQuery($phql, array(
+    'PostId' => $new->PostId,
+    'LikeNum' => $new->LikeNum
+  ));  
+
+  // Create a response
+    $response = new \Phalcon\Http\Response();
+
+    // Check if the insertion was successful
+    if ($status->success() == true) {
+        $response->setJsonContent(
+            array(
+                'status' => 'OK',
+                'data' => $news
+            )
+        );
+    } else {
+
+        // Change the HTTP status
+        $response->setStatusCode(409, "Conflict");
+
+        $errors = array();
+        foreach ($status->getMessages() as $message) {
+            $errors[] = $message->getMessage();
+        }
+
+        $response->setJsonContent(
+            array(
+                'status'   => 'ERROR',
+                'messages' => $errors
+            )
+        );
+    }
+
+    return $response;
+
+});
+
 //Post Post
 $app->post('/api/news',function() use ($app){
   // echo "1";
