@@ -54,7 +54,8 @@ $var_value = $_SESSION['username'];
         </div><!-- END of Right pannel  -->
     </div><!-- END of ROW -->
 </div><!-- END of Body: Container -->
-    <div id='map' style='width: 400px; height: 300px; left: 30%;'></div>
+    
+<div id='map' style='width: 400px; height: 300px; left: 30%;'></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoidml2aWFuMzQ3MiIsImEiOiJjaWxkenR3aDAwZWswdmFtY2o2bWsxNnRpIn0.JShAywmg1Rlk4whs0qcX-w';
 var map = new mapboxgl.Map({
@@ -67,7 +68,6 @@ var map = new mapboxgl.Map({
 map.addControl(new mapboxgl.GeolocateControl());
 
 </script>
-
 <!-- Footer -->
 <div class="footer"></div>
 
@@ -93,15 +93,20 @@ map.addControl(new mapboxgl.GeolocateControl());
         selection.enter()
             .append("div")
             .html(function(d) {
-                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div> </div> '
+                return ' <h4 style = "color: #000">'+d.UserId+'</h4><div class="row"> <div class="col-xs-2"><img src='+d.Image+' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p>Age: ' +d.Age+ '</p><p>Email Address: ' +d.Email+ '</p></div><div class="col-xs-3 hovereffect"><a onclick="myEditProf()">Edit profile</a></div> </div> '
             })
             
         selection.exit().remove();
     }
     d3.json('http://localhost:8888/dbfinal/api/user/'+iname, function (error, data) {
-        data_profile = data;
-//        console.log(data_profile);
-        renderList(data_profile);
+        if (iname == ''){
+            data_profile = '';
+        }
+        else {
+            data_profile = data;
+    //        console.log(data_profile);
+            renderList(data_profile);
+            }
     })
     function getuser(theUrl, callbackFunction){
         $.ajax(
@@ -129,9 +134,15 @@ map.addControl(new mapboxgl.GeolocateControl());
 //          auth(tmp, iPassword);
         });
     });
+    function myEditProf(){
+        href="edituser.html";
+        location.href=this.href+"?id="+id;return false; 
+    }
 </script>
 <style>
-    
+    .hovereffect a:hover{
+        cursor: pointer;
+    }
 </style>
 </body>
 </html>
