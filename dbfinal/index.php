@@ -192,7 +192,7 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 //GET Post
 $app->get('/api/news',function() use($app){
 
-  $phql = "SELECT PostId, n.UserId, Text, n.Image as nImage, PostTime, Longitude, Latitude, Setting, LikeNum, u.Image as uImage FROM News as n left join User as u on n.UserId=u.UserId";
+  $phql = "SELECT PostId, n.UserId, Text, n.Image as Image, PostTime, Longitude, Latitude, Setting, LikeNum, UnlikeNum, u.Image as uImage FROM News as n left join User as u on n.UserId=u.UserId";
   $news = $app->modelsManager->executeQuery($phql);
   $data = array();
   foreach($news as $new){
@@ -206,6 +206,7 @@ $app->get('/api/news',function() use($app){
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
     'LikeNum' => $new->LikeNum,
+    'UnlikeNum' => $new->UnlikeNum,
     'uImage' => $new->uImage
     );
   }
@@ -309,7 +310,8 @@ $app->get('/api/news/{PostId}',function($PostId) use ($app){
     'Longitude' => $new->Longitude,
     'Latitude' => $new->Latitude,
     'Setting' => $new->Setting,
-    'LikeNum' => $new->LikeNum
+    'LikeNum' => $new->LikeNum,
+    'UnlikeNum' => $new->UnlikeNum
    );
   }
   echo json_encode($data);
@@ -317,20 +319,22 @@ $app->get('/api/news/{PostId}',function($PostId) use ($app){
 
 //Update Post
 $app->put('/api/news/{PostId}',function($PostId) use ($app){
-//echo json_encode('success');
   $news = $app->request->getJsonRawBody();
-  //echo json_encode($user);
-  $phql = "UPDATE News SET UserId = :UserId:, Image = :Image:, Posttime = :Posttime:, Longitude = :Longitude:, Latitude = :Latitude:, Setting = :Setting:, LikeNum = :LikeNum: WHERE PostId = :PostId:";
+  // echo "1";
+  // echo json_encode($new);
+  $phql = "UPDATE News SET UserId = :UserId:, Text = :Text:, Image = :Image:, PostTime = :PostTime:, Longitude = :Longitude:, Latitude = :Latitude:, Setting = :Setting:, LikeNum = :LikeNum: , UnlikeNum = :UnlikeNum:WHERE PostId = :PostId:";
+  // echo json_encode($news);
   $status = $app->modelsManager->executeQuery($phql, array(
-    'PostId' => $new->PostId,
-    'UserId' => $new->UserId,
-    'Text' => $new->Text,
-    'Image' => $new->Image,
-    'PostTime' => $new->PostTime,
-    'Longitude' => $new->Longitude,
-    'Latitude' => $new->Latitude,
-    'Setting' => $new->Setting,
-    'LikeNum' => $new->LikeNum
+    'PostId' => $PostId,
+    'UserId' => $news->UserId,
+    'Text' => $news->Text,
+    'Image' => $news->Image,
+    'PostTime' => $news->PostTime,
+    'Longitude' => $news->Longitude,
+    'Latitude' => $news->Latitude,
+    'Setting' => $news->Setting,
+    'LikeNum' => $news->LikeNum,
+    'UnlikeNum' => $news->UnlikeNum
   ));  
 
   // Create a response
@@ -367,7 +371,7 @@ $app->put('/api/news/{PostId}',function($PostId) use ($app){
 });
 
 //GET post likenum by postID(update later)
-$app->get('/api/news/{PostId}/likenum',function($PostId) use ($app){
+$app->get('/api/news/{PostId}/{likenum}',function($PostId) use ($app){
 
   $phql = "SELECT PostId, LikeNum FROM News WHERE PostId = :PostId: ORDER BY PostId";
   $news = $app->modelsManager->executeQuery($phql,array(
@@ -385,14 +389,16 @@ $app->get('/api/news/{PostId}/likenum',function($PostId) use ($app){
 });
 
 //Update Likenum
-$app->put('/api/news/{PostId}/likenum',function($PostId) use ($app){
-echo json_encode('success');
+$app->put('/api/news/{PostId}',function($PostId) use ($app){
+// echo json_encode('success');
   $news = $app->request->getJsonRawBody();
 //  echo json_encode($PostId);
-  $phql = "UPDATE News SET LikeNum = :LikeNum: WHERE PostId = :PostId:";
+  $phql = "UPDATE News SET LikeNum = :LikeNum:, UnlikeNum = :UnlikeNum: WHERE PostId = :PostId:";
+  // echo json_encode()
   $status = $app->modelsManager->executeQuery($phql, array(
-    'PostId' => $new->PostId,
-    'LikeNum' => $new->LikeNum
+    'PostId' => $PostId,
+    'LikeNum' => $news->LikeNum,
+    'UnlikeNum' => $news->UnlikeNum
   ));  
 
   // Create a response
