@@ -75,21 +75,8 @@ $app->get('/api/user/{UserId}',function($UserId) use ($app){
 
 //POST User
 $app->post('/api/user',function() use ($app){
-  // $request = new Phalcon\Http\Request();
-  // Request::getJsonRawBody(true);
-
   $user = $app->request->getJsonRawBody();
-// $user = $app->request->get();
-// $user->response->setContentType('application/json', 'utf-8');
-  // echo json_encode($user);
-  // echo"1";
-  // $phql = "INSERT INTO User (UserId, Email, Password, Age, Image)"."VALUES (:UserId:, :Email:, :Password:, :Age:, :Image:)";
   $phql = "INSERT INTO User (UserId, Age, Image, Email, Password) VALUES (:UserId:, :Age:, :Image:, :Email:, :Password:)";
-  // $phql = "INSERT INTO User (UserId, Age, Image, Email, Password) VALUES ('1', 11, 'asf', 'saf@sf', '111')";
-  // $status = $app->modelsManager->executeQuery($phql);
-  // echo"3";
-  // $phql = "SELECT * FROM User";
-// $phql = "UPDATE User SET Age = 11 WHERE UserId = '123'";
   $status = $app->modelsManager->executeQuery($phql,array(
     'UserId' => $user->UserId,
     'Age' => $user->Age,
@@ -192,7 +179,7 @@ $app->delete('/api/users/{UserId}',function($UserId) use ($app){
 //GET Post
 $app->get('/api/news',function() use($app){
 
-  $phql = "SELECT PostId, n.UserId, Text, n.Image as Image, PostTime, Longitude, Latitude, Setting, LikeNum, UnlikeNum, u.Image as uImage FROM News as n left join User as u on n.UserId=u.UserId";
+  $phql = "SELECT PostId, n.UserId, Text, n.Image as nImage, PostTime, Longitude, Latitude, Setting, LikeNum, UnlikeNum, u.Image as uImage FROM News as n left join User as u on n.UserId=u.UserId";
   $news = $app->modelsManager->executeQuery($phql);
   $data = array();
   foreach($news as $new){
@@ -524,17 +511,16 @@ $app->get('/api/comments/{PostId}',function($PostId) use ($app){
 
 });
 
-//post comments
 $app->post('/api/comments',function() use ($app){
-  $comment = $app->request->getJsonRawBody();
-
+  $comments = $app->request->getJsonRawBody();
+  echo "1";
   $phql = "INSERT INTO Comments (PostId, Author, Recipient, Content, SendTime) VALUES (:PostId:, :Author:, :Recipient:, :Content:, :SendTime:)";
   $status = $app->modelsManager->executeQuery($phql,array(
-      'PostId' => $comment->PostId,
-      'Author' => $comment->Author,
-      'Recipient' => $comment->Recipient,
-      'Content' => $comment->Content,
-      'SendTime' => $comment->SendTime
+      'PostId' => $comments->PostId,
+      'Author' => $comments->Author,
+      'Recipient' => $comments->Recipient,
+      'Content' => $comments->Content,
+      'SendTime' => $comments->SendTime
   ));
 
   $response = new Phalcon\Http\Response();
@@ -571,11 +557,11 @@ $app->get('/api/invite',function() use($app){
   }
   echo json_encode($data);
 });
-
+// SELECT DISTINCT invitor FROM Invitation i JOIN relationship r Where i.UserId = r.UserId and i.UserId = "vivi" and i.invitor not in(SELECT Friend from relationship where UserId = "vivi")
 //get request by name
 $app->get('/api/invite/{UserId}',function($UserId) use ($app){
 
-  $phql = "SELECT * FROM Invitation Where UserId = :UserId:";
+  $phql = "SELECT DISTINCT invitor FROM Invitation i JOIN relationship r Where i.UserId = r.UserId and i.UserId = :UserId: and invitor IN (SELECT Friend from relationship where Friend IS NOT NULL)";
   $invites = $app->modelsManager->executeQuery($phql,array(
     'UserId' => $UserId 
   ));
