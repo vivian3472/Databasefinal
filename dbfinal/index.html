@@ -116,7 +116,8 @@ $_SESSION['username'] = $var_value;
                 var selection = d3.select(idname).selectAll("p")
                     .data(data_cmt, function (d) {
                         //                                                console.log(d);
-                        return d.Author;
+                        var arr = [d.Author, d.sendTime, d.PostId];
+                        return arr;
                     });
                 selection.enter()
                     .append("p")
@@ -141,7 +142,7 @@ $_SESSION['username'] = $var_value;
                 .html(function (d) {
                     //console.log(d.PostId);
                     renderList_cmt(d.PostId);
-                    return ' <div class="row" id="allpost"> <div class="col-xs-2"><img src=' + d.uImage + ' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="' + d.UserId + '">' + d.UserId + '</a></p><p>' + d.Longitude + ', ' + d.Latitude + '</p></div> <div class="col-xs-3"><p> ' + d.PostTime + '</p></div><img src=' + d.nImage + ' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof' + d.PostId + '" onclick="changeLikeImage(this.id)" /><text id="likenumof' + d.PostId + '">' + d.LikeNum + '</text> Likes <img src="https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png" class="likeimg" id="dislikeimgof' + d.PostId + '" onclick="changeDisImage(this.id)" />' + d.DislikeNum + ' Dislikes  <p class="commenttext">' + d.UserId + ': ' + d.Text + '</p></div><div class="col-xs-8" id=cmtof' + d.PostId + '></div> <input type="text" class="form-control" placeholder="Post a comment here..." id=addcmt' + d.PostId + '></div> '
+                    return ' <div class="row" id="allpost"> <div class="col-xs-2"><img src=' + d.uImage + ' class="img-circle" height="55" width="55"/></div><div class="col-xs-7"><p class="postname hovereffect"><a onclick="seeProfile(this.id)" id="' + d.UserId + '">' + d.UserId + '</a></p><p>' + d.Longitude + ', ' + d.Latitude + '</p></div> <div class="col-xs-3"><p> ' + d.PostTime + '</p></div><img src=' + d.nImage + ' class="postimg"> <div class="col-xs-8 hovereffect"><img src="http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png" class="likeimg" id="likeimgof' + d.PostId + '" onclick="changeLikeImage(this.id)" /><text id="likenumof' + d.PostId + '">' + d.LikeNum + '</text> Likes <img src="https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png" class="likeimg" id="unlikeimgof' + d.PostId + '" onclick="changeDisImage(this.id)" /><text id="unlikenumof' + d.PostId + '">' + d.UnlikeNum + '</text> Unlikes  <p class="commenttext">' + d.UserId + ': ' + d.Text + '</p></div><div class="col-xs-8" id=cmtof' + d.PostId + '></div> <input type="text" class="form-control" placeholder="Post a comment here..." id=addcmt' + d.PostId + '></div> '
                 })
                 //http://pngimg.com/upload/heart_PNG706.png
             selection.exit().remove();
@@ -162,55 +163,63 @@ $_SESSION['username'] = $var_value;
             }
         }
 
+        function sendLike(likeid, likenum, unlikenum) {
+            formData = {
+                "PostId": likeid,
+                "LikeNum": likenum,
+                "UnlikeNum": unlikenum
+            }
+            console.log(JSON.stringify(formData));
+
+            $.ajax({
+                url: "http://localhost:8888/dbfinal/api/news/" + likeid,
+                type: 'PUT',
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    console.log("success");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("error");
+                }
+            });
+        }
+
         function changeLikeImage(element) {
+            var likenumid = element.replace("img", "num");
+            var likeid = likenumid.substring(9, likenumid.length);
+            var likenum = document.getElementById(likenumid).textContent;
+            var unlikenumid = "un" + likenumid;
+            var unlikenum = document.getElementById(unlikenumid).textContent;
+
             if (document.getElementById(element).src == "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png") {
                 document.getElementById(element).src = "http://pngimg.com/upload/heart_PNG706.png";
-                var likenumid = element.replace("img", "num");
-                //                console.log(likenumid);
-                var likeid = likenumid.substring(9, likenumid.length);
-//                console.log(likeid);
-                var likenum = document.getElementById(likenumid).textContent;
-                //                console.log(likenum);
                 likenum++;
                 document.getElementById(likenumid).textContent = likenum;
-                                sendLike();
-
-                function sendLike() {
-                    formData = {
-                        "PostId": likeid,
-                        "LikeNum": parseInt(likenum)
-                    }
-                    console.log(JSON.stringify(formData));
-
-                    $.ajax({
-                        url: "http://localhost:8888/dbfinal/api/news/"+likeid+"/likenum",
-                        type: 'PUT',
-                        data: JSON.stringify(formData),
-                        success: function (data) {
-                            console.log("success");
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            console.log("error");
-                        }
-                    });
-                }
-                //                location.reload();
+                sendLike(likeid, likenum, unlikenum);
             } else {
                 document.getElementById(element).src = "http://www.pngall.com/wp-content/uploads/2016/03/Heart-PNG-HD.png";
-                var likenumid = element.replace("img", "num");
-                //                console.log(likenumid);
-                var likenum = document.getElementById(likenumid).textContent;
-                //                console.log(likenum);
                 likenum--;
                 document.getElementById(likenumid).textContent = likenum;
+                sendLike(likeid, likenum, unlikenum);
             }
         }
 
         function changeDisImage(element) {
+            var unlikenumid = element.replace("img", "num");
+            var unlikeid = unlikenumid.substring(11, unlikenumid.length);
+            var unlikenum = document.getElementById(unlikenumid).textContent;
+            var likenumid = unlikenumid.substring(2, unlikenumid.length);
+            var likenum = document.getElementById(likenumid).textContent;
             if (document.getElementById(element).src == "https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png") {
                 document.getElementById(element).src = "https://cdn2.iconfinder.com/data/icons/social-messaging-productivity-1/128/thumbs-down-512.png";
+                unlikenum++;
+                document.getElementById(unlikenumid).textContent = unlikenum;
+                sendLike(unlikeid, likenum, unlikenum);
             } else {
                 document.getElementById(element).src = "https://cdn2.iconfinder.com/data/icons/social-productivity-line-art-2/128/thumbs-down-2-512.png";
+                unlikenum--;
+                document.getElementById(unlikenumid).textContent = unlikenum;
+                sendLike(unlikeid, likenum, unlikenum);
             }
         }
         document.querySelector('#acti-List').addEventListener('keypress', function (e) {
@@ -222,7 +231,6 @@ $_SESSION['username'] = $var_value;
                 var focuscmt = document.activeElement;
                 //                console.log(focuscmt);
                 focuscmtid = focuscmt.id.substring(6, focuscmt.id.length);
-                //                                console.log(focuscmtid);
                 content = $(focuscmt).val();
                 document.getElementById(focuscmt.id).value = '';
                 var d = new Date();
@@ -253,7 +261,7 @@ $_SESSION['username'] = $var_value;
                     });
                     var idname = "#cmtof" + focuscmtid;
                     console.log(idname);
-                    var appendp = '<p class="commenttext">' + id + ': ' + content+'</p>';
+                    var appendp = '<p class="commenttext">' + id + ': ' + content + '</p>';
                     $(idname).append(appendp);
                 }
                 //                location.reload();
